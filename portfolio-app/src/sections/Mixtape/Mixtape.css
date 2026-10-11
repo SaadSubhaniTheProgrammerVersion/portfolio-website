@@ -98,13 +98,16 @@
 /* the crate */
 .crate { margin-top: clamp(2rem, 5vw, 3rem); position: relative; }
 .crate__rack {
-  display: flex; gap: .9rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  /* 5 records + the umbrella: one row on wide screens, 3 + 3 on phones. No scrolling. */
+  display: grid; gap: .9rem; align-items: end;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) 56px;
   padding: 1.8rem 1rem 1rem; margin-bottom: -1.2rem;
-  scrollbar-width: thin;
+}
+@media (max-width: 700px) {
+  .crate__rack { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem .7rem; padding-inline: .5rem; }
 }
 .sleeve {
-  position: relative; flex: 0 0 auto; width: clamp(140px, 30vw, 170px);
-  scroll-snap-align: start;
+  position: relative; min-width: 0;
   display: grid; gap: .1rem; text-align: left; padding: .5rem .5rem .8rem;
   background: var(--white); border: 3px solid var(--ink); border-radius: 12px;
   box-shadow: 4px 4px 0 var(--ink);
@@ -131,7 +134,7 @@
 .sleeve__title { font-weight: 800; font-size: .9rem; line-height: 1.2; }
 .sleeve__artist { font-size: .78rem; color: var(--ink-2); }
 .sleeve--umbrella {
-  width: 70px; align-self: end; display: grid; place-items: center;
+  width: 70px; justify-self: center; display: grid; place-items: center;
   background: transparent; border: 0; box-shadow: none; padding: 0;
 }
 .sleeve__umb { display: block; width: 58px; transform: rotate(-24deg) translateY(14px); filter: drop-shadow(2px 2px 0 var(--ink)); }
@@ -148,27 +151,34 @@
   background: rgba(27, 15, 22, .55); padding: .45rem .6rem; border-radius: 6px; text-align: center;
 }
 
-/* the bucket: 3 artists drawn per visit */
-.bucket {
+/* playlist picker: Local / International + shuffle */
+.picker {
   display: flex; align-items: center; gap: 1rem 1.4rem; flex-wrap: wrap;
   margin-top: clamp(2rem, 5vw, 3rem);
   background: var(--white); border: 3px solid var(--ink); border-radius: var(--r);
   box-shadow: 5px 5px 0 var(--teal); padding: 1rem 1.2rem;
 }
-.bucket__pail { width: 70px; flex: none; animation: pailshake .6s var(--ease); transform-origin: 50% 20%; }
-.bucket__pail svg { display: block; width: 100%; }
-@keyframes pailshake { 15% { rotate: -14deg; } 35% { rotate: 12deg; } 55% { rotate: -8deg; } 75% { rotate: 5deg; } }
-.bucket__body { flex: 1; min-width: 220px; }
-.bucket__label { margin: 0 0 .5rem; font-family: var(--pixel); font-size: .55rem; color: var(--pink); }
-.bucket__tickets { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
-.bucket__tickets li {
-  font-family: var(--disp); font-size: 1.15rem; letter-spacing: .02em; text-transform: uppercase; color: #fff;
-  background: var(--c); border: 2.5px solid var(--ink); border-radius: 6px;
-  padding: .3rem .7rem; box-shadow: 3px 3px 0 var(--ink); text-shadow: 1px 1px 0 var(--ink);
-  rotate: calc((var(--i) - 1) * 3deg);
-  animation: ticket .5s var(--pop) backwards; animation-delay: calc(.25s + var(--i) * .12s);
+.picker__body { flex: 1; min-width: 220px; }
+.picker__label { margin: 0 0 .35rem; font-family: var(--pixel); font-size: .55rem; color: var(--pink); }
+.picker__text { margin: 0; font-weight: 600; font-size: .95rem; line-height: 1.45; }
+.picker__toggle {
+  display: inline-flex; padding: 4px; gap: 4px;
+  background: var(--cream-2); border: 2.5px solid var(--ink); border-radius: 999px;
 }
-@keyframes ticket { from { transform: translateY(18px) scale(.6); opacity: 0; } }
-.bucket__hint { margin: .55rem 0 0; font-size: .82rem; color: var(--ink-2); }
-.bucket__shake { flex: none; }
-.bucket + .crate { margin-top: 1.4rem; }
+.picker__toggle button {
+  border: 0; background: none; border-radius: 999px; padding: .45rem .9rem;
+  font-family: var(--disp); font-size: 1rem; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-2);
+  transition: background .2s, color .2s;
+}
+.picker__toggle button.is-on { background: var(--ink); color: var(--gold); }
+.picker__shuffle { flex: none; }
+.picker + .crate { margin-top: 1.4rem; }
+.crate__rack .sleeve { animation: deal .45s var(--pop) backwards; }
+.crate__rack .sleeve:nth-child(2) { animation-delay: .04s; }
+.crate__rack .sleeve:nth-child(3) { animation-delay: .08s; }
+.crate__rack .sleeve:nth-child(4) { animation-delay: .12s; }
+.crate__rack .sleeve:nth-child(5) { animation-delay: .16s; }
+.crate__rack .sleeve:nth-child(n + 6) { animation-delay: .2s; }
+@keyframes deal { from { transform: translateY(40px); opacity: 0; } }
+.sleeve__title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sleeve__artist { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

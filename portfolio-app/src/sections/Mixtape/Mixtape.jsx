@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { drawBucket } from '../../data/mixtape'
+import { dealCrate, MODES } from '../../data/mixtape'
 import { foundEgg, unlock } from '../../lib/store'
 import { sfx } from '../../lib/sound'
 import { useYouTube } from './useYouTube'
@@ -18,8 +18,9 @@ export default function Mixtape() {
   const stageRef = useRef(null)
   const [near, setNear] = useState(false)
   const [visible, setVisible] = useState(false)
-  const [bucket, setBucket] = useState(() => drawBucket())
-  const [shakes, setShakes] = useState(0)
+  const [mode, setMode] = useState('international')
+  const [tracks, setTracks] = useState(() => dealCrate('international'))
+  const [deals, setDeals] = useState(0)
   const [track, setTrack] = useState(null)
   const [note, setNote] = useState('')
   const [raining, setRaining] = useState(false)
@@ -27,7 +28,6 @@ export default function Mixtape() {
   const played = useRef(new Set())
   const errors = useRef(0)
 
-  const tracks = bucket.tracks
   const idx = track ? tracks.findIndex((t) => t.youtubeId === track.youtubeId) : -1
 
   const { hostRef, state: ytState, load, toggle, volume, setVolume } = useYouTube({
@@ -54,11 +54,12 @@ export default function Mixtape() {
     const n = tracks.length
     pick(tracks[idx < 0 ? (d > 0 ? 0 : n - 1) : (idx + d + n) % n])
   }
-  // Draw 3 new artists (avoiding the current ones). Whatever's playing keeps playing.
-  function shake() {
+  // Deal a new crate (from the chosen playlist). Whatever's playing keeps playing.
+  function deal(nextMode = mode) {
     sfx('coin')
-    setBucket((b) => drawBucket(b.artists.map((a) => a.name)))
-    setShakes((s) => s + 1)
+    setMode(nextMode)
+    setTracks((prev) => dealCrate(nextMode, nextMode === mode ? prev.map((t) => t.youtubeId) : []))
+    setDeals((n) => n + 1)
   }
 
   // Load the 3D chunk a bit before it scrolls into view; render only while visible.
@@ -92,7 +93,7 @@ export default function Mixtape() {
             The <em>mixtape</em>
           </h2>
           <p className="sec__lede">
-            Elite music taste, verified. Every visit, three artists get pulled from my bucket and their records land in the crate. Pick one and drop the needle. (Drag the deck to look around.)
+            Elite music taste, verified. Pick a record from the crate and drop the needle. (Drag the deck to look around.)
           </p>
         </div>
 
@@ -162,34 +163,33 @@ export default function Mixtape() {
           </div>
         </div>
 
-        <div className="bucket">
-          <div className="bucket__pail" key={shakes} aria-hidden="true">
-            <svg viewBox="0 0 80 80">
-              <path d="M18 18 Q40 -6 62 18" fill="none" stroke="#1B0F16" strokeWidth="3.5" />
-              <path d="M10 24 H70 L62 74 H18 Z" fill="#0FA3A3" stroke="#1B0F16" strokeWidth="3.5" strokeLinejoin="round" />
-              <path d="M10 24 H70 L69 32 H11 Z" fill="#08797A" stroke="#1B0F16" strokeWidth="3" strokeLinejoin="round" />
-              <path d="M28 46 h24 M31 56 h18" stroke="#FFF4E4" strokeWidth="3" strokeLinecap="round" opacity=".7" />
-            </svg>
+        <div className="picker">
+          <div className="picker__body">
+            <p className="picker__label">SAAD'S MIXTAPE</p>
+            <p className="picker__text">
+              Every record in this crate is pulled at random from a mixtape I curated myself. Pick a side, then dig in.
+            </p>
           </div>
-          <div className="bucket__body">
-            <p className="bucket__label">FROM THE BUCKET</p>
-            <ul className="bucket__tickets" key={shakes}>
-              {bucket.artists.map((a, i) => (
-                <li key={a.name} style={{ '--c': a.color, '--i': i }}>
-                  {a.name}
-                </li>
-              ))}
-            </ul>
-            <p className="bucket__hint">3 artists, drawn at random. The rest of my rotation stays in the bucket.</p>
+          <div className="picker__toggle" role="radiogroup" aria-label="Music">
+            {MODES.map((m) => (
+              <button
+                key={m.id}
+                role="radio"
+                aria-checked={mode === m.id}
+                className={mode === m.id ? 'is-on' : ''}
+                onClick={() => mode !== m.id && deal(m.id)}
+              >
+                {m.label}
+              </button>
+            ))}
           </div>
-          <button className="btn btn--gold btn--sm bucket__shake" onClick={shake}>
-            Shake the bucket 🔀
+          <button className="btn btn--gold btn--sm picker__shuffle" onClick={() => deal()}>
+            Shuffle the crate 🔀
           </button>
         </div>
 
         <div className="crate" aria-label="Record crate">
-          <div className="crate__rack">
-            {tracks.map((t, i) => (
+          <div className="crate__rack" key={deals}>            {tracks.map((t, i) => (
               <button
                 key={t.youtubeId}
                 className={`sleeve ${idx === i ? 'is-on' : ''}`}
