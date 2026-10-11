@@ -1,0 +1,65 @@
+.contact { background: var(--cream); }
+.contact__grid {
+  display: grid; gap: 1.2rem;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+}
+.contact__card { padding: 1.4rem; box-shadow: 7px 7px 0 var(--pink); transform: rotate(-.6deg); }
+.contact__label { margin: 0 0 .4rem; font-family: var(--pixel); font-size: .55rem; color: var(--pink); }
+.contact__email {
+  display: block; font-weight: 800; font-size: clamp(.95rem, 2.2vw, 1.25rem);
+  word-break: break-all; text-decoration-thickness: 3px; text-decoration-color: var(--gold);
+}
+.contact__btns { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.1rem; }
+
+.contact__tile {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: .1rem;
+  padding: 1.1rem; min-height: 170px; text-decoration: none;
+  font-family: var(--disp); font-size: 1.5rem; text-transform: uppercase;
+  transition: transform .18s var(--pop), box-shadow .18s var(--ease);
+}
+.contact__tile small { font-family: var(--body); font-size: .8rem; text-transform: none; font-weight: 600; opacity: .8; }
+.contact__tile:not(.is-off):hover { transform: translate(-3px, -3px) rotate(-1.5deg); box-shadow: 8px 8px 0 var(--ink); }
+.contact__big { font-size: 2.6rem; line-height: 1; margin-bottom: auto; }
+.contact__tile--li { background: var(--teal); color: #fff; }
+.contact__tile--gh { background: var(--gold); }
+.contact__tile--cv { background: var(--rose); }
+.contact__tile.is-off { opacity: .6; }
+
+@media (max-width: 900px) {
+  .contact__grid { grid-template-columns: 1fr 1fr 1fr; }
+  .contact__card { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .contact__grid { grid-template-columns: 1fr 1fr; }
+  .contact__tile { min-height: 140px; }
+  .contact__tile--cv { grid-column: 1 / -1; min-height: 110px; }
+}
+
+/* trophies */
+.trophies { margin-top: clamp(3rem, 7vw, 5rem); }
+.trophies__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem; }
+.trophies__title { font-family: var(--disp); font-weight: 400; font-size: clamp(2rem, 5vw, 3rem); text-transform: uppercase; margin: 0; }
+.trophies__count { margin: 0; font-size: .7rem; }
+.trophies__bar {
+  height: 18px; margin: .8rem 0 1.4rem; border: 3px solid var(--ink); border-radius: 999px;
+  background: var(--white); overflow: hidden;
+}
+.trophies__bar span {
+  display: block; height: 100%;
+  background: repeating-linear-gradient(45deg, var(--gold) 0 10px, var(--gold-d) 10px 20px);
+  transition: width .6s var(--ease);
+}
+.trophies__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: .9rem; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+.trophy {
+  display: grid; gap: .25rem; align-content: start;
+  padding: .9rem; border: 3px dashed rgba(27, 15, 22, .35); border-radius: 16px;
+  background: rgba(255, 255, 255, .4);
+}
+.trophy.is-got { border: 3px solid var(--ink); background: var(--white); box-shadow: 4px 4px 0 var(--ink); }
+.trophy__icon { font-size: 1.8rem; line-height: 1; filter: grayscale(1); opacity: .5; }
+.trophy.is-got .trophy__icon { filter: none; opacity: 1; }
+.trophy__name { font-weight: 800; }
+.trophy__how { font-size: .8rem; color: var(--ink-2); line-height: 1.4; }

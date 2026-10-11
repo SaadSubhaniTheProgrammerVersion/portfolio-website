@@ -1,0 +1,27 @@
+.toasts {
+  position: fixed; right: max(1rem, env(safe-area-inset-right)); top: calc(var(--nav-h) + .8rem);
+  z-index: 9000; display: grid; gap: .6rem; width: min(360px, calc(100vw - 2rem));
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto; cursor: pointer;
+  display: flex; gap: .8rem; align-items: center;
+  background: var(--ink); color: #fff;
+  border: 3px solid var(--ink); border-radius: 16px;
+  box-shadow: 5px 5px 0 var(--gold); padding: .75rem .9rem;
+  animation: toastIn .45s var(--pop);
+}
+.toast--egg { background: var(--white); color: var(--ink); box-shadow: 5px 5px 0 var(--teal); }
+.toast--legendary { background: linear-gradient(135deg, #FFC42E, #FFE38A); color: var(--ink); box-shadow: 6px 6px 0 var(--pink); }
+@keyframes toastIn { from { transform: translateX(120%) rotate(6deg); } }
+.toast__icon {
+  flex: none; width: 44px; height: 44px; display: grid; place-items: center; font-size: 1.5rem;
+  background: var(--gold); border: 2.5px solid #fff; border-radius: 10px;
+}
+.toast--egg .toast__icon { background: var(--cream-2); border-color: var(--ink); }
+.toast--legendary .toast__icon { background: #fff; border-color: var(--ink); }
+.toast p { margin: 0; }
+.toast__kicker { font-family: var(--pixel); font-size: .48rem; line-height: 1.6; color: var(--gold); }
+.toast--egg .toast__kicker, .toast--legendary .toast__kicker { color: var(--pink); }
+.toast__title { font-family: var(--disp); font-size: 1.25rem; letter-spacing: .02em; line-height: 1.1; margin-top: .15rem !important; }
+.toast__body { font-size: .84rem; opacity: .9; line-height: 1.4; margin-top: .15rem !important; }

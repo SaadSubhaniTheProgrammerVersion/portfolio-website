@@ -1,122 +1,71 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import Boot from './components/Boot'
+import Nav from './components/Nav'
+import Footer from './components/Footer'
+import Toasts from './components/Toasts'
+import CareerQuest from './sections/CareerQuest/CareerQuest'
+import Projects from './sections/Projects/Projects'
+import Skills from './sections/Skills/Skills'
+import Mixtape from './sections/Mixtape/Mixtape'
+import Beyond from './sections/Beyond/Beyond'
+import Vault from './sections/Vault/Vault'
+import Contact from './sections/Contact/Contact'
+import { on, useStore } from './lib/store'
+import { useSecrets, consoleEgg } from './lib/useSecrets'
+import { pictureUrl } from './lib/pictures'
 
-function App() {
-  const [count, setCount] = useState(0)
+const Terminal = lazy(() => import('./components/Terminal'))
+const Pong = lazy(() => import('./components/Pong'))
+
+// Opens a lazy-loaded modal whenever `event` is emitted.
+function useModal(event) {
+  const [open, setOpen] = useState(false)
+  useEffect(() => on(event, () => setOpen((o) => (event === 'terminal' ? !o : true))), [event])
+  const close = useCallback(() => setOpen(false), [])
+  return [open, close]
+}
+
+export default function App() {
+  const eightBit = useStore((s) => s.eightBit)
+  const golden = useStore((s) => !!s.achievements.completionist)
+  const [termOpen, closeTerm] = useModal('terminal')
+  const [pongOpen, closePong] = useModal('pong')
+
+  useSecrets()
+
+  useEffect(() => {
+    consoleEgg()
+    const avatar = pictureUrl(2)
+    if (avatar) document.querySelector('link[rel="icon"]')?.setAttribute('href', avatar)
+  }, [])
+
+  useEffect(() => {
+    document.body.classList.toggle('eight-bit', eightBit)
+  }, [eightBit])
+
+  useEffect(() => {
+    document.body.classList.toggle('golden', golden)
+  }, [golden])
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <Boot />
+      <Nav />
+      <main>
+        <CareerQuest />
+        <Projects />
+        <Skills />
+        <Mixtape />
+        <Beyond />
+        <Vault />
+        <Contact />
+      </main>
+      <Footer />
+      <Toasts />
+      <Suspense fallback={null}>
+        {termOpen && <Terminal onClose={closeTerm} />}
+        {pongOpen && <Pong onClose={closePong} />}
+      </Suspense>
     </>
   )
 }
-
-export default App

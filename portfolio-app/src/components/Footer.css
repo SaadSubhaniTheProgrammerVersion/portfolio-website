@@ -1,0 +1,21 @@
+.foot { background: var(--ink); color: var(--cream); border-top: 3px solid var(--ink); }
+.marq { overflow: hidden; background: var(--gold); color: var(--ink); border-bottom: 3px solid var(--ink); }
+.marq__row { display: flex; gap: 1.6rem; width: max-content; padding: .7rem 0; animation: slide 38s linear infinite; }
+.marq__row span { font-family: var(--disp); font-size: 1.3rem; letter-spacing: .04em; white-space: nowrap; }
+.marq:hover .marq__row { animation-play-state: paused; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+.foot__inner {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .4rem 1rem;
+  padding-block: 2rem calc(2rem + env(safe-area-inset-bottom));
+}
+.foot__name { margin: 0; font-family: var(--disp); font-size: 1.6rem; text-transform: uppercase; }
+.foot__name span { font-family: var(--body); font-size: .9rem; text-transform: none; opacity: .7; }
+.foot__small { margin: 0; grid-column: 1; font-size: .85rem; opacity: .7; }
+.foot__term {
+  grid-column: 2; grid-row: 1 / span 2;
+  font-family: var(--pixel); font-size: .7rem; color: var(--pipe);
+  background: #000; border: 2px solid #333; border-radius: 6px; padding: .5rem .55rem;
+  opacity: .6; transition: opacity .2s;
+}
+.foot__term:hover { opacity: 1; }

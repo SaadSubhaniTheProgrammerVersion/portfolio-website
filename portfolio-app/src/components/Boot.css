@@ -1,0 +1,43 @@
+.boot {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem; padding: 2rem; text-align: center; overflow: hidden;
+  background: var(--sky); color: #fff;
+  cursor: pointer;
+  transition: opacity .45s ease, transform .45s var(--ease);
+}
+.boot--out { opacity: 0; transform: scale(1.06); }
+.boot__clouds {
+  position: absolute; inset: 0; pointer-events: none; opacity: .9;
+  background:
+    radial-gradient(ellipse 70px 26px at 12% 18%, #fff 98%, transparent),
+    radial-gradient(ellipse 90px 30px at 82% 14%, #fff 98%, transparent),
+    radial-gradient(ellipse 60px 22px at 70% 78%, #fff 98%, transparent),
+    radial-gradient(ellipse 80px 26px at 22% 84%, #fff 98%, transparent);
+  animation: drift 18s linear infinite alternate;
+}
+@keyframes drift { to { transform: translateX(40px); } }
+.boot > *:not(.boot__clouds) { position: relative; }
+.boot__by { margin: 0; font-family: var(--pixel); font-size: .6rem; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--ink); }
+.boot__logo {
+  margin: 0; font-family: var(--disp); font-weight: 400;
+  font-size: clamp(4.5rem, 20vw, 11rem); line-height: .9;
+  color: var(--gold);
+  -webkit-text-stroke: 4px var(--ink); paint-order: stroke fill;
+  text-shadow: 8px 8px 0 var(--ink);
+  transform: rotate(-3deg);
+  animation: logo 3s ease-in-out infinite;
+}
+.boot__logo span { color: var(--pink); }
+@keyframes logo { 50% { transform: rotate(-1deg) translateY(-6px); } }
+.boot__sub { margin: 0 0 1.4rem; font-weight: 800; font-size: 1.1rem; text-shadow: 2px 2px 0 var(--ink); }
+.boot__start {
+  font-family: var(--pixel); font-size: clamp(.8rem, 2.6vw, 1.05rem);
+  color: var(--ink); background: var(--white);
+  border: 3px solid var(--ink); border-radius: 12px; box-shadow: 5px 5px 0 var(--ink);
+  padding: 1rem 1.4rem .9rem;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { background: var(--gold); } }
+.boot__hint { margin: 0; font-family: var(--pixel); font-size: .5rem; opacity: .85; }
+.boot__copy { position: absolute !important; bottom: 1.4rem; margin: 0; font-family: var(--pixel); font-size: .45rem; opacity: .75; }

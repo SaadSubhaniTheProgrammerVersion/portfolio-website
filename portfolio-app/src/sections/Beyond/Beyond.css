@@ -1,0 +1,61 @@
+.beyond { background: var(--cream-2); border-block: 3px solid var(--ink); }
+.board {
+  position: relative;
+  display: grid; gap: 2.2rem 1.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  padding: 2rem clamp(.5rem, 3vw, 2rem) 3rem;
+  background: #C9A27A;
+  background-image: radial-gradient(rgba(0, 0, 0, .12) 1.2px, transparent 1.4px);
+  background-size: 9px 9px;
+  border: 3px solid var(--ink); border-radius: var(--r);
+  box-shadow: inset 0 0 0 10px #A97F55, 6px 6px 0 var(--ink);
+}
+.polaroid {
+  position: relative; border: 0; padding: 0; background: none; text-align: left;
+  transform: rotate(var(--tilt)); transition: transform .25s var(--pop);
+  perspective: 900px;
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.03); z-index: 2; }
+.polaroid__tape {
+  position: absolute; left: 50%; top: -12px; z-index: 3; translate: -50% 0;
+  width: 70px; height: 22px; background: rgba(255, 244, 228, .75);
+  border: 1px solid rgba(0, 0, 0, .1); transform: rotate(-4deg);
+}
+.polaroid__inner {
+  display: grid; transform-style: preserve-3d;
+  transition: transform .5s var(--ease);
+}
+.polaroid.is-flipped .polaroid__inner { transform: rotateY(180deg); }
+.polaroid__front, .polaroid__back {
+  grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: #fff; border: 2px solid var(--ink); box-shadow: 4px 5px 0 rgba(0, 0, 0, .35);
+}
+.polaroid__front { display: block; padding: .6rem .6rem 0; }
+.polaroid__pic { display: block; aspect-ratio: 1; overflow: hidden; border: 1.5px solid #ddd; }
+.polaroid__cap {
+  display: block; padding: .6rem .2rem .8rem; text-align: center;
+  font-family: "Comic Sans MS", "Marker Felt", "Segoe Print", cursive; font-size: 1rem; color: var(--ink);
+}
+.polaroid__back {
+  transform: rotateY(180deg);
+  display: grid; place-items: center; padding: 1.2rem;
+  background: var(--gold); font-weight: 700; font-size: .92rem; line-height: 1.45; color: var(--ink);
+}
+
+/* HIMYM horn */
+.horn {
+  position: absolute; right: clamp(.4rem, 2vw, 1.2rem); bottom: -18px; z-index: 4;
+  width: 70px; padding: 0; border: 0; background: none;
+  transform: rotate(-14deg); transition: transform .2s var(--pop);
+}
+.horn:hover { transform: rotate(-4deg) scale(1.1); }
+.horn svg { width: 100%; display: block; filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, .35)); }
+.horn.is-honking svg { animation: honkhorn .5s var(--ease); }
+@keyframes honkhorn { 30% { transform: scale(1.25) rotate(8deg); } }
+.horn__note {
+  position: absolute; right: 60%; bottom: 100%; width: 190px;
+  font-weight: 800; font-size: .82rem; line-height: 1.35; color: var(--ink); text-align: center;
+  background: #fff; border: 2.5px solid var(--ink); border-radius: 12px; padding: .5rem .6rem;
+  box-shadow: 3px 3px 0 #2F6FD6; transform: rotate(14deg);
+  animation: pop .35s var(--pop);
+}

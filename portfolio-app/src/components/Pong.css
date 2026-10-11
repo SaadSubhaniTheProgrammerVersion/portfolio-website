@@ -1,0 +1,29 @@
+.pong__backdrop {
+  position: fixed; inset: 0; z-index: 9500;
+  display: grid; place-items: center; padding: 1rem;
+  background: rgba(27, 15, 22, .6); backdrop-filter: blur(3px);
+  animation: fade .2s ease;
+}
+.pong {
+  width: min(840px, 100%);
+  background: var(--ink); color: #fff;
+  border: 3px solid #fff; border-radius: 18px; box-shadow: 8px 8px 0 var(--gold);
+  padding: .9rem; animation: pop .3s var(--pop);
+}
+.pong__head { display: flex; align-items: center; gap: 1rem; font-family: var(--pixel); font-size: .65rem; margin-bottom: .7rem; }
+.pong__title { margin-inline: auto; color: var(--gold); }
+.pong__score--you { color: var(--gold); }
+.pong__score--cpu { color: var(--pink); }
+.pong__x { background: none; border: 0; color: #fff; font-size: 1rem; }
+.pong__field { position: relative; }
+.pong__field canvas {
+  display: block; width: 100%; height: auto; aspect-ratio: 8 / 5;
+  border: 3px solid #3A2A34; border-radius: 10px; touch-action: none; cursor: none;
+}
+.pong__over {
+  position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: .6rem;
+  text-align: center; background: rgba(13, 10, 15, .8); border-radius: 10px;
+}
+.pong__over p { margin: 0; }
+.pong__over .pixel { font-size: 1.1rem; color: var(--gold); }
+.pong__help { margin: .6rem 0 0; font-size: .8rem; opacity: .7; text-align: center; }
