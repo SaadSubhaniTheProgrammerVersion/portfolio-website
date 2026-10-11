@@ -147,3 +147,28 @@
   font-family: var(--pixel); font-size: clamp(.4rem, 1.4vw, .55rem); color: #FFE9CE;
   background: rgba(27, 15, 22, .55); padding: .45rem .6rem; border-radius: 6px; text-align: center;
 }
+
+/* the bucket: 3 artists drawn per visit */
+.bucket {
+  display: flex; align-items: center; gap: 1rem 1.4rem; flex-wrap: wrap;
+  margin-top: clamp(2rem, 5vw, 3rem);
+  background: var(--white); border: 3px solid var(--ink); border-radius: var(--r);
+  box-shadow: 5px 5px 0 var(--teal); padding: 1rem 1.2rem;
+}
+.bucket__pail { width: 70px; flex: none; animation: pailshake .6s var(--ease); transform-origin: 50% 20%; }
+.bucket__pail svg { display: block; width: 100%; }
+@keyframes pailshake { 15% { rotate: -14deg; } 35% { rotate: 12deg; } 55% { rotate: -8deg; } 75% { rotate: 5deg; } }
+.bucket__body { flex: 1; min-width: 220px; }
+.bucket__label { margin: 0 0 .5rem; font-family: var(--pixel); font-size: .55rem; color: var(--pink); }
+.bucket__tickets { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.bucket__tickets li {
+  font-family: var(--disp); font-size: 1.15rem; letter-spacing: .02em; text-transform: uppercase; color: #fff;
+  background: var(--c); border: 2.5px solid var(--ink); border-radius: 6px;
+  padding: .3rem .7rem; box-shadow: 3px 3px 0 var(--ink); text-shadow: 1px 1px 0 var(--ink);
+  rotate: calc((var(--i) - 1) * 3deg);
+  animation: ticket .5s var(--pop) backwards; animation-delay: calc(.25s + var(--i) * .12s);
+}
+@keyframes ticket { from { transform: translateY(18px) scale(.6); opacity: 0; } }
+.bucket__hint { margin: .55rem 0 0; font-size: .82rem; color: var(--ink-2); }
+.bucket__shake { flex: none; }
+.bucket + .crate { margin-top: 1.4rem; }

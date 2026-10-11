@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { MIXTAPE } from '../../data/mixtape'
+import { drawBucket } from '../../data/mixtape'
 import { foundEgg, unlock } from '../../lib/store'
 import { sfx } from '../../lib/sound'
 import { useYouTube } from './useYouTube'
@@ -18,37 +18,47 @@ export default function Mixtape() {
   const stageRef = useRef(null)
   const [near, setNear] = useState(false)
   const [visible, setVisible] = useState(false)
-  const [idx, setIdx] = useState(null)
+  const [bucket, setBucket] = useState(() => drawBucket())
+  const [shakes, setShakes] = useState(0)
+  const [track, setTrack] = useState(null)
   const [note, setNote] = useState('')
   const [raining, setRaining] = useState(false)
   const [pineapple, setPineapple] = useState(false)
   const played = useRef(new Set())
   const errors = useRef(0)
 
-  const track = idx === null ? null : MIXTAPE[idx]
+  const tracks = bucket.tracks
+  const idx = track ? tracks.findIndex((t) => t.youtubeId === track.youtubeId) : -1
 
   const { hostRef, state: ytState, load, toggle, volume, setVolume } = useYouTube({
     onPlaying: () => {
       errors.current = 0
-      played.current.add(idx)
+      if (track) played.current.add(track.youtubeId)
       if (played.current.size >= 3) unlock('audiophile')
     },
     onEnded: () => step(1),
     onError: () => {
       errors.current += 1
       setNote('This record is scratched (YouTube won’t let it play here). Skipping…')
-      if (errors.current < MIXTAPE.length) setTimeout(() => step(1), 1400)
+      if (errors.current < tracks.length) setTimeout(() => step(1), 1400)
     },
   })
 
-  function pick(i) {
+  function pick(t) {
     sfx('click')
-    setIdx(i)
+    setTrack(t)
     setNote('')
-    load(MIXTAPE[i].youtubeId)
+    load(t.youtubeId)
   }
   function step(d) {
-    pick(((idx ?? -d) + d + MIXTAPE.length) % MIXTAPE.length)
+    const n = tracks.length
+    pick(tracks[idx < 0 ? (d > 0 ? 0 : n - 1) : (idx + d + n) % n])
+  }
+  // Draw 3 new artists (avoiding the current ones). Whatever's playing keeps playing.
+  function shake() {
+    sfx('coin')
+    setBucket((b) => drawBucket(b.artists.map((a) => a.name)))
+    setShakes((s) => s + 1)
   }
 
   // Load the 3D chunk a bit before it scrolls into view; render only while visible.
@@ -81,7 +91,9 @@ export default function Mixtape() {
           <h2 className="sec__title">
             The <em>mixtape</em>
           </h2>
-          <p className="sec__lede">Elite music taste, verified. Pull a record from the crate and drop the needle. (Drag the deck to look around.)</p>
+          <p className="sec__lede">
+            Elite music taste, verified. Every visit, three artists get pulled from my bucket and their records land in the crate. Pick one and drop the needle. (Drag the deck to look around.)
+          </p>
         </div>
 
         <div className="deck">
@@ -132,7 +144,7 @@ export default function Mixtape() {
                   <button onClick={() => step(-1)} aria-label="Previous record">
                     ⏮
                   </button>
-                  <button onClick={() => (track ? toggle() : pick(0))} aria-label={playing ? 'Pause' : 'Play'} className="tv__play">
+                  <button onClick={() => (track ? toggle() : pick(tracks[0]))} aria-label={playing ? 'Pause' : 'Play'} className="tv__play">
                     {playing ? '⏸' : '▶'}
                   </button>
                   <button onClick={() => step(1)} aria-label="Next record">
@@ -150,14 +162,39 @@ export default function Mixtape() {
           </div>
         </div>
 
+        <div className="bucket">
+          <div className="bucket__pail" key={shakes} aria-hidden="true">
+            <svg viewBox="0 0 80 80">
+              <path d="M18 18 Q40 -6 62 18" fill="none" stroke="#1B0F16" strokeWidth="3.5" />
+              <path d="M10 24 H70 L62 74 H18 Z" fill="#0FA3A3" stroke="#1B0F16" strokeWidth="3.5" strokeLinejoin="round" />
+              <path d="M10 24 H70 L69 32 H11 Z" fill="#08797A" stroke="#1B0F16" strokeWidth="3" strokeLinejoin="round" />
+              <path d="M28 46 h24 M31 56 h18" stroke="#FFF4E4" strokeWidth="3" strokeLinecap="round" opacity=".7" />
+            </svg>
+          </div>
+          <div className="bucket__body">
+            <p className="bucket__label">FROM THE BUCKET</p>
+            <ul className="bucket__tickets" key={shakes}>
+              {bucket.artists.map((a, i) => (
+                <li key={a.name} style={{ '--c': a.color, '--i': i }}>
+                  {a.name}
+                </li>
+              ))}
+            </ul>
+            <p className="bucket__hint">3 artists, drawn at random. The rest of my rotation stays in the bucket.</p>
+          </div>
+          <button className="btn btn--gold btn--sm bucket__shake" onClick={shake}>
+            Shake the bucket 🔀
+          </button>
+        </div>
+
         <div className="crate" aria-label="Record crate">
           <div className="crate__rack">
-            {MIXTAPE.map((t, i) => (
+            {tracks.map((t, i) => (
               <button
                 key={t.youtubeId}
                 className={`sleeve ${idx === i ? 'is-on' : ''}`}
                 style={{ '--c': t.color, '--thumb': `url(https://i.ytimg.com/vi/${t.youtubeId}/mqdefault.jpg)` }}
-                onClick={() => pick(i)}
+                onClick={() => pick(t)}
                 aria-pressed={idx === i}
               >
                 <span className="sleeve__art" aria-hidden="true">
