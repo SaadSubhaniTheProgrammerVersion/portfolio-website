@@ -50,7 +50,7 @@ export const VAULT = {
       picture: 20,
       title: 'Unexplained',
       place: '¯\\_(ツ)_/¯',
-      story: "I don't even know what we are doing here, tbh.",
+      story: 'Idk what I was even doing here.',
     },
     {
       picture: 21,
