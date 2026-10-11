@@ -1,7 +1,13 @@
 export const VAULT = {
   code: '2002',
-  hint: 'Hint: my birth year.',
-  strongHint: 'Okay, okay. The year Saad spawned: 200_',
+  // Hints get a little less subtle the more wrong guesses pile up:
+  // hints[0] at the start, then the next one every 2 wrong guesses.
+  hints: [
+    'Hint: the code is hiding in my gamer tag.',
+    'Same tag I use on Steam. Ever played with me?',
+    "It's a year. A really, really good year.",
+    'A very good year for gamers. Think early 2000s.',
+  ],
   // The first wrong answer always gets the goldfish line (Ted Lasso egg).
   wrong: [
     'Be a goldfish. 🐟 Try again.',

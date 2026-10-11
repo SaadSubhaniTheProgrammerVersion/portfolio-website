@@ -15,7 +15,7 @@ const HINTS = [
   'Something blue and brassy is hiding near the polaroids.',
   'Type "suit up" anywhere. Seriously, anywhere.',
   'Developers: the browser console has something for you.',
-  "The vault's hint is not a trick. It's a birth year.",
+  'The vault code? Check what I go by when I game.',
 ]
 
 const go = (hash) => {
@@ -95,7 +95,7 @@ function run(raw, ctx) {
     }
     case 'vault':
     case 'vault code':
-      return ['nice try, idjit. the hint is my birth year.']
+      return ["nice try, idjit. i'd check my steam profile if i were you."]
     case 'konami':
       return ['not here. use your arrow keys. 🎮']
     case 'rm -rf /':

@@ -12,7 +12,7 @@ export default function Vault() {
   const cracked = useStore((s) => !!s.achievements.safecracker)
   const [code, setCode] = useState('')
   const [fails, setFails] = useState(0)
-  const [msg, setMsg] = useState(VAULT.hint)
+  const [msg, setMsg] = useState(VAULT.hints[0])
   const [shake, setShake] = useState(0)
   const [open, setOpen] = useState(false)
   const doorRef = useRef(null)
@@ -42,7 +42,8 @@ export default function Vault() {
     setShake((s) => s + 1)
     if (n === 1) foundEgg('goldfish')
     const line = VAULT.wrong[(n - 1) % VAULT.wrong.length]
-    setMsg(n >= 3 ? `${line} ${VAULT.strongHint}` : line)
+    const hint = VAULT.hints[Math.min(Math.floor(n / 2), VAULT.hints.length - 1)]
+    setMsg(`${line} ${hint}`)
     setCode('')
   }
 
@@ -64,7 +65,7 @@ export default function Vault() {
           <h2 className="sec__title">
             The <em>vault</em>
           </h2>
-          <p className="sec__lede">Classified goofy material. Four digits. The hint is right there, it's not exactly Fort Knox.</p>
+          <p className="sec__lede">Classified goofy material. Four digits. Know me well enough and you already know the code.</p>
         </div>
 
         <div className="vault__room">

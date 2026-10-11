@@ -54,7 +54,7 @@ export function consoleEgg() {
   ].join('\n')
   console.log(`%c${art}`, 'color:#E01B7A;font-weight:bold')
   console.log(
-    '%cOh hey, a fellow dev. 👋\n%cYou found the console. Type %chireSaad()%c to claim your achievement.\nVault hint: my birth year.',
+    '%cOh hey, a fellow dev. 👋\n%cYou found the console. Type %chireSaad()%c to claim your achievement.\nVault hint: it was a really good year.',
     'font-size:14px;font-weight:bold;color:#0FA3A3',
     'font-size:12px',
     'font-size:12px;background:#FFC42E;color:#1B0F16;padding:2px 4px;border-radius:3px',
