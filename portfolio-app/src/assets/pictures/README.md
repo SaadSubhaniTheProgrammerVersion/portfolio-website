@@ -8,8 +8,8 @@ Keep each file under ~500 KB if you can (squoosh.app is great for this).
 | File | Where it shows up | What to put in it |
 |---|---|---|
 | Picture1 | Game start sign ("Haaave you met Saad?") | A fun, colorful portrait, roughly square |
-| Picture2 | Nav avatar + browser tab icon | Close-up of your face, square |
-| Picture3 | Game: NUST 2020 block | Early uni / campus photo |
+| Picture2 | (not used) | — |
+| Picture3 | Game: NUST 2020 block | NUST campus photo |
 | Picture4 | Game: NCIL block | The IoT lab, or a screenshot of the lab website |
 | Picture5 | Game: WALEE block | Internship days / office |
 | Picture6 | Game: X-rAI award block | The ICESCO award moment |
@@ -20,6 +20,7 @@ Keep each file under ~500 KB if you can (squoosh.app is great for this).
 | Picture11 | Beyond Code polaroid | Pehli Kiran workshop |
 | Picture12 | Beyond Code polaroid | YES / NUST Digital Club event |
 | Picture13–15 | Beyond Code polaroids | 3 of your best design pieces (square works best) |
-| Picture16–21 | The Vault | 6 goofy photos |
+| Picture16–21 | The Vault | 6 goofy photos (square crops) |
+| Picture22 | Game: Senior Associate block | Promotion / at-work photo |
 
 The resume goes somewhere else: `portfolio-app/public/Saad-Subhani-Resume.pdf`.

@@ -2,21 +2,45 @@ import { useEffect, useRef, useState } from 'react'
 import { MILESTONES } from '../data/milestones'
 import { PROJECTS } from '../data/projects'
 import { PROFILE } from '../data/profile'
+import { ACHIEVEMENTS } from '../data/eggs'
 import { emit, foundEgg, getState, setState, unlock } from '../lib/store'
 import { sfx } from '../lib/sound'
 import './Terminal.css'
 
-const HINTS = [
-  'Old-school cheat codes still work here. ↑↑↓↓…',
-  'Baby is parked in World 1-1. Have you tried standing on her roof?',
-  "Something sweet is hiding above the clouds, right before the flag. Dean's favourite.",
-  'The BELIEVE sign looks a bit crooked. Maybe fix it. Then keep going.',
-  'Ever looked closely at the record crate? Something yellow is tucked in there.',
-  'Something blue and brassy is hiding near the polaroids.',
-  'Type "suit up" anywhere. Seriously, anywhere.',
-  'Developers: the browser console has something for you.',
-  'The vault code? Check what I go by when I game.',
-]
+// Extra, more specific clues that follow a trophy's main hint.
+const CLUES = {
+  safecracker: ['The vault code? Check what I go by when I game.'],
+  konami: ['↑ ↑ ↓ ↓ ← → ← → … and two letters. Anywhere on the page.'],
+  squasher: ['Jump on them. From above. Every single one.'],
+  speedrun: ['Skip the ? blocks and just run. The ↻ button restarts the clock.'],
+  devtools: ['F12 (or right-click → Inspect), then open the Console tab.'],
+  hunter: [
+    'Baby is parked in World 1-1. Have you tried standing on her roof?',
+    "Something sweet is hiding above the clouds, right before the flag. Dean's favourite.",
+    "Demons hate one word. Try it in here: 'christo'.",
+  ],
+  believer: [
+    'The BELIEVE sign by the vault looks a bit crooked. Fix it. Then keep going.',
+    "There's a football in World 1-1. Give it a kick.",
+    "Got a problem? Ask the diamond dogs. (In here.)",
+  ],
+  legendary: [
+    'Ever looked closely at the record crate? Something yellow is tucked in there.',
+    'Something blue and brassy is hiding near the polaroids.',
+    'Type "suit up" anywhere. Seriously, anywhere.',
+  ],
+}
+
+// Hints for the trophies this visitor hasn't unlocked yet: each one's main
+// hint first, then its extra clues, taking turns across trophies.
+function lockedHints() {
+  const got = getState().achievements
+  const locked = ACHIEVEMENTS.filter((a) => !got[a.id] && a.id !== 'completionist')
+  const lists = locked.map((a) => [a.hint, ...(CLUES[a.id] || [])])
+  const out = []
+  for (let i = 0; lists.some((l) => l[i]); i++) lists.forEach((l) => l[i] && out.push(l[i]))
+  return out
+}
 
 const go = (hash) => {
   document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
@@ -71,8 +95,11 @@ function run(raw, ctx) {
         emit('pong')
       }, 400)
       return ['inserting coin… 🪙']
-    case 'hint':
-      return [`💡 ${HINTS[ctx.nextHint()]}`]
+    case 'hint': {
+      const hints = lockedHints()
+      if (!hints.length) return ["💡 nothing left to find. you're legendary. 👑"]
+      return [`💡 ${hints[ctx.nextHint() % hints.length]}`]
+    }
     case 'christo':
       emit('christo')
       foundEgg('christo')
@@ -101,6 +128,10 @@ function run(raw, ctx) {
     case 'rm -rf /':
     case 'sudo rm -rf /':
       return ['nice try. 😅 this portfolio has backups.']
+    case '221b':
+    case 'sherlock':
+    case 'sherlock holmes':
+      return ['🔍 221B Baker Street. The game is afoot.']
     case 'chai':
     case 'coffee':
       return ['brewing… ☕ done. productivity +10.']
@@ -122,7 +153,7 @@ function run(raw, ctx) {
 
 export default function Terminal({ onClose }) {
   const [lines, setLines] = useState(() => [
-    { t: 'saad.exe terminal v1.0 · type "help"', k: 'sys' },
+    { t: 'saadsubhani.exe terminal v1.0 · type "help"', k: 'sys' },
   ])
   const [input, setInput] = useState('')
   const [history, setHistory] = useState([])
@@ -161,7 +192,7 @@ export default function Terminal({ onClose }) {
     const out = run(raw, {
       close: onClose,
       print,
-      nextHint: () => hintRef.current++ % HINTS.length,
+      nextHint: () => hintRef.current++,
       slap: () => ++slapRef.current,
     })
     setLines((l) => [...l, { t: raw, k: 'cmd' }, ...out.map((t) => ({ t }))])
@@ -190,7 +221,7 @@ export default function Terminal({ onClose }) {
             <i />
             <i />
           </span>
-          <span>guest@saad.exe: ~</span>
+          <span>guest@saadsubhani.exe: ~</span>
           <button onClick={onClose} aria-label="Close terminal">
             ✕
           </button>
@@ -198,12 +229,12 @@ export default function Terminal({ onClose }) {
         <div className="term__body" ref={bodyRef} onClick={() => inputRef.current?.focus()}>
           {lines.map((l, i) => (
             <p key={i} className={`term__line term__line--${l.k || 'out'}`}>
-              {l.k === 'cmd' && <span className="term__ps">guest@saad.exe:~$ </span>}
+              {l.k === 'cmd' && <span className="term__ps">guest@saadsubhani.exe:~$ </span>}
               {l.t}
             </p>
           ))}
           <form onSubmit={submit} className="term__form">
-            <span className="term__ps">guest@saad.exe:~$&nbsp;</span>
+            <span className="term__ps">guest@saadsubhani.exe:~$&nbsp;</span>
             <input
               ref={inputRef}
               value={input}

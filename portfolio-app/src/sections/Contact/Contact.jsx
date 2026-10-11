@@ -45,10 +45,10 @@ export default function Contact() {
         <div className="sec__head">
           <span className="sec__kicker">THE CASTLE</span>
           <h2 className="sec__title">
-            Biscuits with <em>the Boss?</em>
+            We don't talk anymore… <em>but we should</em>
           </h2>
           <p className="sec__lede">
-            Building something distributed, secure or slightly unhinged? Let's talk. I'll bring the biscuits.
+            Building something distributed, secure or slightly unhinged? Drop me a line. Like Charlie said, we should be talking.
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default function Contact() {
                 <li key={a.id} className={`trophy ${has ? 'is-got' : ''}`}>
                   <span className="trophy__icon">{has ? a.icon : '❓'}</span>
                   <span className="trophy__name">{has ? a.name : '???'}</span>
-                  <span className="trophy__how">{has ? a.how : 'Keep exploring…'}</span>
+                  <span className={`trophy__how ${has ? '' : 'trophy__how--hint'}`}>{has ? a.how : `💡 ${a.hint}`}</span>
                 </li>
               )
             })}

@@ -3,17 +3,19 @@
   display: grid; gap: clamp(1.2rem, 3vw, 2rem); align-items: stretch;
   grid-template-columns: minmax(0, 1.35fr) minmax(280px, 1fr);
 }
-@media (max-width: 900px) { .deck { grid-template-columns: 1fr; } .deck__stage { min-height: 0; aspect-ratio: 1; } }
+@media (min-width: 901px) { .deck__stage { min-height: 380px; } }
+@media (max-width: 900px) { .deck { grid-template-columns: 1fr; } .deck__stage { aspect-ratio: 1; } }
 
 /* 3D stage */
 .deck__stage {
-  position: relative; min-height: 380px; overflow: hidden;
+  position: relative; overflow: hidden;
   background:
     radial-gradient(circle at 50% 40%, #FFE9CE 0 30%, transparent 70%),
     repeating-linear-gradient(90deg, #F7D9B5 0 46px, #F2CFA6 46px 92px);
   border: 3px solid var(--ink); border-radius: var(--r); box-shadow: 6px 6px 0 var(--ink);
 }
-.deck__canvas { position: absolute; inset: 0; }
+.deck > * { min-width: 0; } /* the 3D canvas must never set the column's width */
+.deck__canvas { position: absolute; inset: 0; overflow: hidden; }
 .deck__canvas canvas { touch-action: pan-y; }
 .deck__loading { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-size: .6rem; }
 .deck__now {

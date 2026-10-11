@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useStore, setState } from '../lib/store'
 import { ACHIEVEMENTS } from '../data/eggs'
 import { unlockAudio } from '../lib/sound'
-import Picture from './Picture'
 import './Nav.css'
 
 const LINKS = [
@@ -25,10 +24,7 @@ export default function Nav() {
   return (
     <header className="nav">
       <a className="nav__logo" href="#play" onClick={() => setOpen(false)}>
-        <span className="nav__avatar">
-          <Picture n={2} alt="" emoji="🙂" />
-        </span>
-        SAAD<span>.EXE</span>
+        SAADSUBHANI<span>.EXE</span>
       </a>
 
       <nav className={`nav__links ${open ? 'is-open' : ''}`} aria-label="Sections">

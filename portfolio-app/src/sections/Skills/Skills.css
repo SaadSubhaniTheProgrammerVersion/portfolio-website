@@ -1,6 +1,7 @@
+#skills { overflow-x: clip; } /* tooltips near the screen edge must not widen the page */
 .inv {
   display: grid; gap: 1.4rem;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
 }
 .inv__group {
   background: #2A1B24; border: 3px solid var(--ink); border-radius: var(--r);

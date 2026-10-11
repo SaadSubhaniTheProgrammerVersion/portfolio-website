@@ -106,7 +106,7 @@
 }
 .sign__top { display: flex; align-items: center; gap: 8px; }
 .sign__pic {
-  width: 44px !important; height: 44px !important; flex: none;
+  width: 56px !important; height: 56px !important; flex: none;
   border-radius: 50%; border: 2.5px solid var(--ink); overflow: hidden;
 }
 .sign__pic.pic--empty span:first-child { font-size: 1.2rem; }
@@ -249,19 +249,23 @@
 
 /* ═══════════ Milestone card ═══════════ */
 .mcard__backdrop {
-  position: absolute; inset: 0; z-index: 20;
-  display: grid; place-items: center; padding: 3.2rem .9rem .9rem;
-  background: rgba(27, 15, 22, .45);
+  /* the whole screen, not just the game area, so cards have room to breathe */
+  position: fixed; inset: 0; z-index: 800;
+  display: grid; place-items: center; padding: 1rem;
+  grid-template-columns: minmax(0, 1fr); /* don't let the photo's pixel width size the card */
+  background: rgba(27, 15, 22, .55);
   animation: fade .2s ease;
 }
 @keyframes fade { from { opacity: 0; } }
 .mcard {
-  width: min(460px, 100%); max-height: 100%; overflow-y: auto;
+  width: min(460px, 100%); max-height: calc(100svh - 2rem); overflow-y: auto;
+  scrollbar-width: none;
   background: var(--white); border: 3px solid var(--ink); border-radius: var(--r);
   box-shadow: 8px 8px 0 var(--pink); padding: 1.1rem 1.2rem 1.2rem;
   animation: pop .35s var(--pop);
 }
 @keyframes pop { from { transform: translateY(30px) scale(.9) rotate(-2deg); opacity: 0; } }
+.mcard::-webkit-scrollbar { display: none; }
 .mcard__pic {
   width: 100%; aspect-ratio: 16 / 9; max-height: 30svh; border: 3px solid var(--ink); border-radius: 14px;
   overflow: hidden; margin-bottom: .9rem; transform: rotate(-1deg);
@@ -279,6 +283,25 @@
 .mcard__list li + li { margin-top: .35rem; }
 .mcard__list li::marker { content: "▸ "; color: var(--teal); }
 .mcard__btn { margin-top: 1rem; }
+
+/* wide screens: photo beside the text, so cards stay short */
+@media (min-width: 760px) {
+  .mcard:has(.mcard__pic) {
+    width: min(820px, 100%);
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 1.3rem; align-items: center;
+  }
+  .mcard:has(.mcard__pic) .mcard__pic { margin-bottom: 0; max-height: none; }
+}
+/* small phones: tighter type and spacing */
+@media (max-width: 480px) {
+  .mcard { padding: .85rem .9rem .95rem; }
+  .mcard__pic { max-height: 24svh; margin-bottom: .7rem; }
+  .mcard__title { font-size: 1.35rem; margin-top: .45rem; }
+  .mcard__org { font-size: .82rem; margin-bottom: .45rem; }
+  .mcard__list { font-size: .84rem; line-height: 1.45; }
+  .mcard__list li + li { margin-top: .25rem; }
+  .mcard__btn { margin-top: .75rem; }
+}
 
 /* ═══════════ End card ═══════════ */
 .endcard {

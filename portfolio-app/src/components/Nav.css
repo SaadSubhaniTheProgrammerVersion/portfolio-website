@@ -8,17 +8,10 @@
   border-bottom: 3px solid var(--ink);
 }
 .nav__logo {
-  display: inline-flex; align-items: center; gap: .55rem; flex: none;
+  display: inline-flex; align-items: center; flex: none;
   text-decoration: none; font-family: var(--disp); font-size: 1.35rem; letter-spacing: .02em;
 }
 .nav__logo > span:last-child { color: var(--pink); }
-.nav__avatar {
-  width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex: none;
-  border: 2.5px solid var(--ink); background: var(--gold);
-}
-.nav__avatar .pic--empty { padding: 0; }
-.nav__avatar .pic--empty span:first-child { font-size: 1.1rem; }
-.nav__avatar .pic--empty small { display: none; }
 
 .nav__links { display: flex; gap: 1.1rem; margin-inline: auto; }
 .nav__links a {
@@ -62,7 +55,11 @@
   .nav__links a { padding: .85rem var(--gut); font-size: 1rem; border-top: 2px dashed rgba(27, 15, 22, .15); }
 }
 @media (max-width: 480px) {
-  .nav__logo { font-size: 1.1rem; }
-  .nav__logo > span:last-child { display: none; }
+  .nav { gap: .5rem; padding-inline: .75rem; }
+  .nav__logo { font-size: 1rem; letter-spacing: 0; }
+  .nav__stats { gap: .3rem; }
   .nav__pill { padding: .35rem .45rem; }
+}
+@media (max-width: 360px) {
+  .nav__pill[title="Coins collected"] { display: none; } /* coins still show in the game HUD */
 }

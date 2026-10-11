@@ -63,3 +63,4 @@
 .trophy.is-got .trophy__icon { filter: none; opacity: 1; }
 .trophy__name { font-weight: 800; }
 .trophy__how { font-size: .8rem; color: var(--ink-2); line-height: 1.4; }
+.trophy__how--hint { font-style: italic; }

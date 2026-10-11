@@ -9,7 +9,7 @@ const W = 800
 const H = 500
 const PW = 12
 const PH = 80
-const WIN = 5
+const WIN = 3
 
 export default function Pong({ onClose }) {
   const canvasRef = useRef(null)

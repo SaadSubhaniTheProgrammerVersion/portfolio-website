@@ -45,16 +45,13 @@ export function useSecrets() {
 
 export function consoleEgg() {
   if (window.hireSaad) return
-  const art = [
-    '   _____  ___    ___    ____      _______  __ ______',
-    '  / ___/ /   |  /   |  / __ \\    / ____/ |/ // ____/',
-    '  \\__ \\ / /| | / /| | / / / /   / __/  |   // __/   ',
-    ' ___/ // ___ |/ ___ |/ /_/ /   / /___ /   |/ /___   ',
-    '/____//_/  |_/_/  |_/_____(_) /_____//_/|_/_____/   ',
-  ].join('\n')
-  console.log(`%c${art}`, 'color:#E01B7A;font-weight:bold')
   console.log(
-    '%cOh hey, a fellow dev. 👋\n%cYou found the console. Type %chireSaad()%c to claim your achievement.\nVault hint: it was a really good year.',
+    '%cSAADSUBHANI%c.EXE',
+    'font: 900 34px Impact, sans-serif; color: #FFC42E; text-shadow: 3px 3px 0 #1B0F16; letter-spacing: 1px',
+    'font: 900 34px Impact, sans-serif; color: #E01B7A; text-shadow: 3px 3px 0 #1B0F16',
+  )
+  console.log(
+    '%cElementary, my dear developer. 🔍\n%cYou found the console. Type %chireSaad()%c to claim your achievement.\nVault hint: it was a really good year.',
     'font-size:14px;font-weight:bold;color:#0FA3A3',
     'font-size:12px',
     'font-size:12px;background:#FFC42E;color:#1B0F16;padding:2px 4px;border-radius:3px',

@@ -12,7 +12,6 @@ import Vault from './sections/Vault/Vault'
 import Contact from './sections/Contact/Contact'
 import { on, useStore } from './lib/store'
 import { useSecrets, consoleEgg } from './lib/useSecrets'
-import { pictureUrl } from './lib/pictures'
 
 const Terminal = lazy(() => import('./components/Terminal'))
 const Pong = lazy(() => import('./components/Pong'))
@@ -35,8 +34,6 @@ export default function App() {
 
   useEffect(() => {
     consoleEgg()
-    const avatar = pictureUrl(2)
-    if (avatar) document.querySelector('link[rel="icon"]')?.setAttribute('href', avatar)
   }, [])
 
   useEffect(() => {

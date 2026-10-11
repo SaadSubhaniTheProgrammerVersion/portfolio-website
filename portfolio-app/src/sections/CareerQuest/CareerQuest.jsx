@@ -399,17 +399,19 @@ function MilestoneCard({ m, onClose }) {
             <Picture n={m.picture} alt={m.title} />
           </div>
         )}
-        <p className="mcard__year">{m.year}</p>
-        <h3 className="mcard__title">{m.title}</h3>
-        <p className="mcard__org">{m.org}</p>
-        <ul className="mcard__list">
-          {m.bullets.map((b) => (
-            <li key={b}>{b}</li>
-          ))}
-        </ul>
-        <button ref={closeRef} className="btn btn--sm mcard__btn" onClick={onClose}>
-          Continue ▶
-        </button>
+        <div className="mcard__body">
+          <p className="mcard__year">{m.year}</p>
+          <h3 className="mcard__title">{m.title}</h3>
+          <p className="mcard__org">{m.org}</p>
+          <ul className="mcard__list">
+            {m.bullets.map((b) => (
+              <li key={b}>{b}</li>
+            ))}
+          </ul>
+          <button ref={closeRef} className="btn btn--sm mcard__btn" onClick={onClose}>
+            Continue ▶
+          </button>
+        </div>
       </article>
     </div>
   )

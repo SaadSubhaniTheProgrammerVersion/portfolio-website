@@ -1,5 +1,6 @@
 .foot { background: var(--ink); color: var(--cream); border-top: 3px solid var(--ink); }
-.marq { overflow: hidden; background: var(--gold); color: var(--ink); border-bottom: 3px solid var(--ink); }
+.marq { background: var(--gold); color: var(--ink); border-bottom: 3px solid var(--ink); }
+.marq__clip { overflow: hidden; }
 .marq__row { display: flex; gap: 1.6rem; width: max-content; padding: .7rem 0; animation: slide 38s linear infinite; }
 .marq__row span { font-family: var(--disp); font-size: 1.3rem; letter-spacing: .04em; white-space: nowrap; }
 .marq:hover .marq__row { animation-play-state: paused; }

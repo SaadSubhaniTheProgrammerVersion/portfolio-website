@@ -1,0 +1,41 @@
+/* Baby on the footer strip */
+.marq { position: relative; }
+.marq:has(.drive.is-driving) .marq__row { animation-play-state: paused; }
+
+.drive { position: absolute; inset: 0 4px; pointer-events: none; }
+.drive__car {
+  /* parked on top of the strip, wheels on its top edge */
+  position: absolute; left: 0; bottom: calc(100% + 1px);
+  width: 96px; height: 38px; padding: 0; border: 0; background: none;
+  pointer-events: auto; cursor: grab; touch-action: none;
+  filter: drop-shadow(2px 1px 0 rgba(27, 15, 22, .35));
+}
+.drive__car.is-dragging { cursor: grabbing; }
+.drive__car:not(.is-dragging) { transition: transform .25s var(--ease); }
+.drive__car svg { display: block; width: 100%; height: 100%; }
+.drive__car.is-dragging svg { animation: rumble .12s steps(2) infinite; }
+@keyframes rumble { 50% { translate: 0 -1px; } }
+.drive__car.has-arrived .tail { fill: #FF3B3B; }
+
+.drive__hint {
+  position: absolute; left: calc(100% + 6px); top: 50%; translate: 0 -50%;
+  white-space: nowrap; font-family: var(--pixel); font-size: .5rem; color: var(--ink);
+  background: var(--white); border: 2px solid var(--ink); border-radius: 6px; padding: .3rem .4rem .25rem;
+  animation: nudge 1.4s ease-in-out infinite;
+}
+@keyframes nudge { 50% { translate: 5px -50%; } }
+
+.drive__dean {
+  position: absolute; right: 0; bottom: calc(100% + 52px); z-index: 50;
+  display: grid; justify-items: center; gap: .35rem;
+  background: var(--white); border: 3px solid var(--ink); border-radius: 14px;
+  box-shadow: 5px 5px 0 var(--ink); padding: .45rem .45rem .5rem;
+  animation: deanPop .45s var(--pop);
+}
+.drive__dean::after {
+  content: ""; position: absolute; right: 40px; top: 100%;
+  border: 10px solid transparent; border-top-color: var(--ink);
+}
+.drive__dean img { display: block; width: 160px; height: auto; border-radius: 8px; }
+.drive__dean span { font-family: var(--disp); font-size: 1.05rem; letter-spacing: .03em; text-transform: uppercase; }
+@keyframes deanPop { from { transform: translateY(16px) scale(.7); opacity: 0; } }

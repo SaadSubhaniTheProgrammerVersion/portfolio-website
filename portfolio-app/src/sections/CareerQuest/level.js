@@ -31,7 +31,7 @@ export function buildLevel() {
   const pipes = [
     { x: 760, h: 2, label: '' },
     { x: 1640, h: 3, label: '' },
-    { x: 2560, h: 3, label: 'AKS' },
+    { x: 2560, h: 3, label: '' },
     { x: 3040, h: 2, label: '' },
   ]
   pipes.forEach((p, i) =>

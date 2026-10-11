@@ -75,9 +75,9 @@ export default function Vault() {
           <div className="vault__safe">
             <div className={`safe ${isOpen ? 'is-open' : ''}`}>
               <div className="safe__inside">
-                {VAULT.goofy.map((n, i) => (
-                  <div key={n} className="goof" style={{ '--r': `${(i % 3) * 3 - 3}deg` }}>
-                    <Picture n={n} alt="A goofy photo of Saad" emoji={['🤪', '😜', '🙃', '🤡', '😎', '🥸'][i % 6]} />
+                {VAULT.files.map((f, i) => (
+                  <div key={f.picture} className="goof" style={{ '--r': `${(i % 3) * 3 - 3}deg` }}>
+                    <Picture n={f.picture} alt="" emoji="📁" />
                   </div>
                 ))}
               </div>
@@ -104,8 +104,61 @@ export default function Vault() {
             </div>
           </div>
         </div>
+
+        {isOpen && <GoofFiles />}
       </div>
     </section>
+  )
+}
+
+// The goof files: photo on the front, the story behind it on the back.
+function GoofFiles() {
+  const [flipped, setFlipped] = useState(() => new Set())
+  const flip = (n) => {
+    sfx('click')
+    setFlipped((f) => {
+      const next = new Set(f)
+      if (next.has(n)) next.delete(n)
+      else next.add(n)
+      return next
+    })
+  }
+  return (
+    <div className="files">
+      <p className="files__head">
+        <span>CLASSIFIED FILES · {VAULT.files.length}</span> Tap a photo to read the story behind it.
+      </p>
+      <div className="files__grid">
+        {VAULT.files.map((f, i) => (
+          <button
+            key={f.picture}
+            className={`file ${flipped.has(f.picture) ? 'is-flipped' : ''}`}
+            style={{ '--tilt': `${[-1.5, 1, -0.5, 1.5, -1, 0.5][i % 6]}deg` }}
+            onClick={() => flip(f.picture)}
+            aria-pressed={flipped.has(f.picture)}
+            aria-label={`${f.title}: ${flipped.has(f.picture) ? f.story : 'tap to read the story'}`}
+          >
+            <span className="file__inner">
+              <span className="file__front">
+                <span className="file__photo">
+                  <Picture n={f.picture} alt={f.title} emoji="📁" />
+                </span>
+                <span className="file__cap">
+                  <b>{f.title}</b>
+                  <i aria-hidden="true">↻</i>
+                </span>
+              </span>
+              <span className="file__back" aria-hidden={!flipped.has(f.picture)}>
+                <span className="file__no">FILE #{String(i + 1).padStart(3, '0')}</span>
+                <b className="file__title">{f.title}</b>
+                <span className="file__story">{f.story}</span>
+                <span className="file__place">📍 {f.place}</span>
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }
 

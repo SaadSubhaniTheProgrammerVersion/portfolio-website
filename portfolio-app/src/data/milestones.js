@@ -7,7 +7,7 @@ export const MILESTONES = [
     id: 'nust',
     x: 576,
     year: '2020',
-    title: 'Player 1 has joined: NUST',
+    title: 'Started my Bachelors at NUST',
     org: 'National University of Sciences & Technology',
     picture: 3,
     bullets: [
@@ -60,7 +60,10 @@ export const MILESTONES = [
     title: 'Graduated! 🎓',
     org: 'NUST · BS Computer Science',
     picture: 7,
-    bullets: ['Four years, one CGPA of 3.63, and a lot of chai. Level complete.'],
+    bullets: [
+      'Four years, a 3.63 CGPA and an award-winning final year project later: graduated.',
+      'Did I eat? I ate. Left no crumbs. 🎓',
+    ],
   },
   {
     id: 'zones-assoc',
@@ -102,6 +105,7 @@ export const MILESTONES = [
     year: 'Mar 2025',
     title: 'Promoted: Senior Associate Software Engineer',
     org: 'Zones, LLC',
+    picture: 22,
     bullets: ['Moved from infrastructure work into product ownership and UI engineering.'],
   },
   {
