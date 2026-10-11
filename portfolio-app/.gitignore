@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Resume (contains private contact details)
+public/Saad-Subhani-Resume.pdf
