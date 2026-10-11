@@ -9,6 +9,7 @@ import Skills from './sections/Skills/Skills'
 import Mixtape from './sections/Mixtape/Mixtape'
 import Beyond from './sections/Beyond/Beyond'
 import Vault from './sections/Vault/Vault'
+import Guestbook from './sections/Guestbook/Guestbook'
 import Contact from './sections/Contact/Contact'
 import { on, useStore } from './lib/store'
 import { useSecrets, consoleEgg } from './lib/useSecrets'
@@ -55,6 +56,7 @@ export default function App() {
         <Mixtape />
         <Beyond />
         <Vault />
+        <Guestbook />
         <Contact />
       </main>
       <Footer />

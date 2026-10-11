@@ -11,6 +11,7 @@ const LINKS = [
   ['#mixtape', 'Mixtape'],
   ['#beyond', 'Beyond code'],
   ['#vault', 'Vault'],
+  ['#guestbook', 'Guestbook'],
   ['#contact', 'Contact'],
 ]
 

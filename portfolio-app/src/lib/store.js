@@ -5,7 +5,7 @@ import { ACHIEVEMENTS, FANDOMS, EGG_LINES } from '../data/eggs'
 import { sfx } from './sound'
 
 const KEY = 'saad.exe.v1'
-const SAVED = ['achievements', 'eggs', 'coins', 'muted', 'suit', 'eightBit']
+const SAVED = ['achievements', 'eggs', 'coins', 'muted', 'suit', 'eightBit', 'terminalSeen', 'guestbookDone']
 
 function load() {
   try {
@@ -24,6 +24,8 @@ let state = {
   eightBit: false,
   toasts: [],
   modal: null,
+  terminalSeen: false,
+  guestbookDone: false,
   ...load(),
 }
 const listeners = new Set()

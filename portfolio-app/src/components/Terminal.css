@@ -5,6 +5,7 @@
   animation: fade .2s ease;
 }
 .term {
+  position: relative;
   width: min(720px, 100%); height: min(460px, 80svh);
   display: flex; flex-direction: column;
   background: #0D0A0F; color: #C8F7C5;
@@ -34,3 +35,17 @@
   flex: 1; min-width: 0; background: none; border: 0; outline: none;
   color: #fff; font: inherit; caret-color: var(--pipe); padding: 0;
 }
+
+/* first-visit Sherlock cameo */
+.term__sherlock {
+  position: absolute; right: .9rem; bottom: .9rem; z-index: 2;
+  display: grid; justify-items: center; gap: .3rem;
+  background: #fff; border: 3px solid var(--ink); border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--pipe); padding: .4rem .4rem .45rem;
+  animation: sherlockIn .5s var(--pop), sherlockOut .4s ease 5.6s forwards;
+}
+.term__sherlock img { display: block; width: 200px; height: auto; border-radius: 7px; }
+.term__sherlock span { font-family: var(--pixel); font-size: .5rem; color: var(--ink); }
+@keyframes sherlockIn { from { transform: translateY(20px) scale(.7) rotate(-6deg); opacity: 0; } }
+@keyframes sherlockOut { to { transform: translateY(10px) scale(.9); opacity: 0; } }
+@media (max-width: 480px) { .term__sherlock img { width: 150px; } }

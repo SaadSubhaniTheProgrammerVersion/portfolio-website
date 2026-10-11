@@ -3,7 +3,10 @@ import { PROFILE } from '../data/profile'
 import ImpalaDrive from './ImpalaDrive'
 import './Footer.css'
 
-const TICKER = ['DISTRIBUTED SYSTEMS', '★', 'PAYMENT ENGINES', '★', 'ENTERPRISE IAM', '★', 'APPLIED AI', '★', 'VISUAL DESIGN', '★', 'ELITE MUSIC TASTE', '★']
+const TICKER = [
+  'DISTRIBUTED SYSTEMS', '★', 'DISTRIBUTED MICROSERVICES', '★', 'PAYMENT ENGINES', '★', 'ENTERPRISE IAM', '★',
+  'APPLIED AI', '★', 'VISUAL DESIGN', '★', 'ALWAYS HAS HEADPHONES IN', '★',
+]
 
 export default function Footer() {
   return (

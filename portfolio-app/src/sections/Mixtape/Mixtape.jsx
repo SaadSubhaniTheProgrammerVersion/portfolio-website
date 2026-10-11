@@ -93,7 +93,7 @@ export default function Mixtape() {
             The <em>mixtape</em>
           </h2>
           <p className="sec__lede">
-            Elite music taste, verified. Pick a record from the crate and drop the needle. (Drag the deck to look around.)
+            Handpicked, heavily replayed. Pick a record from the crate and drop the needle. (Drag the deck to look around.)
           </p>
         </div>
 

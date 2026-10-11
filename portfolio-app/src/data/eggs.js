@@ -52,6 +52,10 @@ export const ACHIEVEMENTS = [
     hint: "Baby's parked at the very bottom of the page. Take her for a drive.",
   },
   {
+    id: 'guestbook', icon: '🎨', name: 'Left Your Mark', how: 'Pinned your pixels to the guestbook wall.',
+    hint: 'There is a wall down there that wants exactly five of your pixels.',
+  },
+  {
     id: 'completionist', icon: '👑', name: 'Completionist', how: 'Found every single thing. 100%.',
     hint: 'Find everything else first.',
   },

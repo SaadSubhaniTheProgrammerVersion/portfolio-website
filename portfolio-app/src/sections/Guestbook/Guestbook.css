@@ -1,0 +1,41 @@
+.gb { background: var(--cream-2); border-block: 3px solid var(--ink); }
+
+.gb__frame {
+  background: #2A1B24; border: 3px solid var(--ink); border-radius: var(--r);
+  box-shadow: 6px 6px 0 var(--pink); padding: clamp(.6rem, 2vw, 1rem);
+}
+.gb__wall { position: relative; min-width: 0; }
+.gb__wall canvas {
+  display: block; margin: 0 auto; cursor: crosshair; touch-action: manipulation;
+  border-radius: 6px; image-rendering: pixelated;
+}
+.gb__overlay {
+  position: absolute; inset: 0; margin: 0; display: grid; place-items: center; text-align: center;
+  font-size: .7rem; color: var(--ink); background: rgba(255, 253, 248, .75); border-radius: 6px; padding: 1rem;
+}
+.gb__info { margin: .65rem 0 0; min-height: 1.4em; color: rgba(255, 244, 228, .85); font-size: .88rem; font-weight: 600; text-align: center; }
+
+.gb__controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1rem;
+  margin-top: 1.2rem;
+}
+.gb__palette { display: flex; flex-wrap: wrap; gap: .4rem; }
+.gb__swatch {
+  width: 30px; height: 30px; padding: 0; border-radius: 8px;
+  background: var(--c); border: 2.5px solid var(--ink); box-shadow: 2px 2px 0 var(--ink);
+  transition: transform .15s var(--pop);
+}
+.gb__swatch.is-on { transform: translateY(-3px) scale(1.12); box-shadow: 0 0 0 3px var(--cream-2), 0 0 0 6px var(--ink); }
+.gb__left { margin: 0; font-size: .6rem; }
+.gb__name { flex: 1; min-width: 180px; }
+.gb__name input {
+  width: 100%; font: inherit; font-weight: 600; padding: .55rem .8rem;
+  border: 2.5px solid var(--ink); border-radius: 999px; background: var(--white); box-shadow: 2px 2px 0 var(--ink);
+}
+.gb__name input:focus { outline: 3px solid var(--pink); outline-offset: 2px; }
+.gb__error { flex-basis: 100%; margin: 0; font-weight: 700; color: var(--pink-d); }
+.gb__done { margin: 1.2rem 0 0; font-weight: 800; font-size: 1.05rem; }
+
+.gb__signed { margin-top: 1.6rem; }
+.gb__signed-label { margin: 0 0 .6rem; font-family: var(--pixel); font-size: .55rem; color: var(--pink); }
+.gb__signed ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }

@@ -25,3 +25,6 @@ dist-ssr
 
 # Resume (contains private contact details)
 public/Saad-Subhani-Resume.pdf
+
+# Local pixel-guestbook data (dev server only)
+.guestbook-dev.json

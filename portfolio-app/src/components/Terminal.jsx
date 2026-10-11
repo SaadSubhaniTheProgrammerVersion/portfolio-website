@@ -7,6 +7,9 @@ import { emit, foundEgg, getState, setState, unlock } from '../lib/store'
 import { sfx } from '../lib/sound'
 import './Terminal.css'
 
+// BBC Sherlock, "The game, Mrs Hudson, is on!" (official Sherlock GIPHY upload)
+const SHERLOCK_GIF = 'https://media.giphy.com/media/3o7TKVSE5isogWqnwk/200w.gif'
+
 // Extra, more specific clues that follow a trophy's main hint.
 const CLUES = {
   safecracker: ['The vault code? Check what I go by when I game.'],
@@ -163,6 +166,15 @@ export default function Terminal({ onClose }) {
   const hintRef = useRef(0)
   const slapRef = useRef(0)
 
+  // First visit to the terminal: Sherlock says hi.
+  const [sherlock, setSherlock] = useState(() => !getState().terminalSeen)
+  useEffect(() => {
+    if (!sherlock) return
+    setState({ terminalSeen: true })
+    const t = setTimeout(() => setSherlock(false), 6000)
+    return () => clearTimeout(t)
+  }, [sherlock])
+
   useEffect(() => {
     unlock('root')
     setState({ modal: 'terminal' })
@@ -215,6 +227,12 @@ export default function Terminal({ onClose }) {
   return (
     <div className="term__backdrop" onClick={onClose}>
       <div className="term" role="dialog" aria-modal="true" aria-label="Terminal" onClick={(e) => e.stopPropagation()}>
+        {sherlock && (
+          <div className="term__sherlock" role="status">
+            <img src={SHERLOCK_GIF} alt="Sherlock: The game, Mrs Hudson, is on!" width="200" height="112" />
+            <span>The game is on. 🔍</span>
+          </div>
+        )}
         <div className="term__bar">
           <span className="term__dots" aria-hidden="true">
             <i />
