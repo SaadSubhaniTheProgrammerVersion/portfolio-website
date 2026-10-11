@@ -11,7 +11,7 @@ export const MILESTONES = [
     org: 'National University of Sciences & Technology',
     picture: 3,
     bullets: [
-      'BS Computer Science, 2020–2024, CGPA 3.63.',
+      'BS Computer Science, 2020–2024.',
       'Director of Graphic Design at YES (SEECS) and Deputy Director Admin Events at NUST Digital Club.',
       'Shipped side quests: a Google-paper search engine, PONG in raw Intel MASM Assembly, and the S.H.A Share file-sharing system.',
     ],
