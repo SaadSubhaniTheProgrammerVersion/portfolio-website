@@ -10,7 +10,9 @@ export const BEYOND = [
     caption: 'YES & NUST Digital Club',
     back: 'Director of Graphic Design at YES (SEECS) and Deputy Director Admin Events at NUST Digital Club, 2021–2024.',
   },
-  { picture: 13, caption: 'Design work #1', back: 'Posters, branding and visuals. Photoshop + Illustrator.' },
-  { picture: 14, caption: 'Design work #2', back: 'Media direction and video edits in Premiere Pro.' },
-  { picture: 15, caption: 'Design work #3', back: 'Beats in FL Studio when the code compiles on the first try.' },
+  {
+    picture: 13,
+    caption: 'Iftar volunteers',
+    back: 'Volunteering at a community iftar during Ramadan: setting up, serving and making sure nobody broke their fast hungry.',
+  },
 ]

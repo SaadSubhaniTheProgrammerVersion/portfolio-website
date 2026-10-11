@@ -19,7 +19,8 @@ Keep each file under ~500 KB if you can (squoosh.app is great for this).
 | Picture10 | Projects: X-rAI cartridge | Demo screenshot or poster (16:9) |
 | Picture11 | Beyond Code polaroid | Pehli Kiran workshop |
 | Picture12 | Beyond Code polaroid | YES / NUST Digital Club event |
-| Picture13–15 | Beyond Code polaroids | 3 of your best design pieces (square works best) |
+| Picture13 | Beyond Code polaroid | Iftar volunteering |
+| Picture14–15 | (not used) | — |
 | Picture16–21 | The Vault | 6 goofy photos (square crops) |
 | Picture22 | Game: Senior Associate block | Promotion / at-work photo |
 
