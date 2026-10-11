@@ -374,7 +374,10 @@ export default function CareerQuest() {
               ▶
             </button>
           </div>
-          <p className="pad__hint">hit the ? blocks</p>
+          <a className="pad__more" href="#projects" aria-label="Scroll down for more">
+            <span aria-hidden="true">▼</span>
+            scroll
+          </a>
           <button className="pad__btn pad__btn--a" aria-label="Jump" {...pad('jump')}>
             A
           </button>

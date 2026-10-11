@@ -332,11 +332,18 @@
 }
 .pad__btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #000; }
 .pad__btn--a { width: 78px; height: 78px; border-radius: 50%; background: var(--pink); color: #fff; font-family: var(--pixel); font-size: 1.1rem; }
-.pad__hint { margin: 0; font-family: var(--pixel); font-size: .5rem; color: rgba(255, 255, 255, .5); text-align: center; }
+.pad__more {
+  display: grid; justify-items: center; gap: .35rem;
+  font-family: var(--pixel); font-size: .5rem; color: var(--gold); text-decoration: none;
+  padding: .4rem .5rem; touch-action: manipulation;
+}
+.pad__more span { font-size: 1rem; line-height: 1; animation: moreBounce 1.2s ease-in-out infinite; }
+@keyframes moreBounce { 50% { transform: translateY(5px); } }
 
 @media (pointer: coarse) {
   .pad { display: flex; }
-  .quest__viewport { height: min(calc(100svh - var(--nav-h) - 110px), 130vw, 600px); min-height: 320px; }
+  /* leaves a sliver of the next section peeking out, so it's clear the page scrolls */
+  .quest__viewport { height: min(calc(100svh - var(--nav-h) - 150px), 130vw, 600px); min-height: 320px; }
 }
 @media (pointer: coarse) and (orientation: landscape) {
   .quest__viewport { height: calc(100svh - var(--nav-h)); min-height: 280px; }
@@ -346,7 +353,7 @@
   }
   .pad__btn { pointer-events: auto; opacity: .85; width: 58px; height: 58px; }
   .pad__btn--a { width: 66px; height: 66px; }
-  .pad__hint { display: none; }
+  .pad__more { pointer-events: auto; align-self: flex-end; }
 }
 
 /* ═══════════ List mode ═══════════ */
