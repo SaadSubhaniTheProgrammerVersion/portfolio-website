@@ -49,8 +49,20 @@ const go = (hash) => {
   document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
 }
 
+// Hidden guestbook admin commands (not in `help`). The password is checked
+// by the server against GUESTBOOK_ADMIN_KEY; nothing secret lives in this file.
+const ADMIN = {
+  'sudo clear-wall': { params: 'all=1', label: 'wiping the whole guestbook wall' },
+  'sudo erase-last': { params: 'last=1', label: 'erasing the latest signature' },
+}
+
 function run(raw, ctx) {
   const cmd = raw.trim().toLowerCase().replace(/\s+/g, ' ')
+  if (ADMIN[cmd]) return ctx.admin(ADMIN[cmd])
+  if (cmd.startsWith('sudo erase ')) {
+    const name = raw.trim().replace(/^sudo\s+erase\s+/i, '')
+    return ctx.admin({ params: `name=${encodeURIComponent(name)}`, label: `erasing everything signed "${name}"` })
+  }
   switch (cmd) {
     case '':
       return []
@@ -193,11 +205,43 @@ export default function Terminal({ onClose }) {
 
   const print = (out) => setLines((l) => [...l, ...out.map((t) => ({ t }))])
 
+  // Guestbook admin: the key is remembered for this tab only.
+  const [pwPrompt, setPwPrompt] = useState(null)
+  const runAdmin = async (action, key) => {
+    try {
+      const r = await fetch(`/api/guestbook?${action.params}`, { method: 'DELETE', headers: { 'x-admin-key': key } })
+      const data = await r.json().catch(() => ({}))
+      if (r.status === 401) {
+        sessionStorage.removeItem('gb.admin')
+        return print(['sudo: incorrect password'])
+      }
+      if (!r.ok) return print([`✗ ${data.error || 'that did not work'}`])
+      sessionStorage.setItem('gb.admin', key)
+      emit('guestbook:refresh')
+      print([`✓ removed ${data.removed} signature${data.removed === 1 ? '' : 's'}${data.names?.length ? ` (${data.names.slice(0, 5).join(', ')}${data.names.length > 5 ? ', …' : ''})` : ''}`])
+    } catch {
+      print(['✗ could not reach the wall. try again in a bit.'])
+    }
+  }
+  const admin = (action) => {
+    const saved = sessionStorage.getItem('gb.admin')
+    if (saved) runAdmin(action, saved)
+    else setPwPrompt(action)
+    return [`🧹 ${action.label}…`]
+  }
+
   const submit = (e) => {
     e.preventDefault()
     const raw = input
     setInput('')
     setHpos(-1)
+    if (pwPrompt) {
+      const action = pwPrompt
+      setPwPrompt(null)
+      setLines((l) => [...l, { t: '[sudo] password for saad: ' + '•'.repeat(Math.min(raw.length, 12)), k: 'sys' }])
+      if (raw) runAdmin(action, raw)
+      return
+    }
     if (raw.trim()) setHistory((h) => [raw, ...h].slice(0, 30))
     if (raw.trim().toLowerCase() === 'clear') return setLines([])
     sfx('click')
@@ -206,6 +250,7 @@ export default function Terminal({ onClose }) {
       print,
       nextHint: () => hintRef.current++,
       slap: () => ++slapRef.current,
+      admin,
     })
     setLines((l) => [...l, { t: raw, k: 'cmd' }, ...out.map((t) => ({ t }))])
   }
@@ -252,9 +297,10 @@ export default function Terminal({ onClose }) {
             </p>
           ))}
           <form onSubmit={submit} className="term__form">
-            <span className="term__ps">guest@saadsubhani.exe:~$&nbsp;</span>
+            <span className="term__ps">{pwPrompt ? '[sudo] password for saad: ' : 'guest@saadsubhani.exe:~$ '}</span>
             <input
               ref={inputRef}
+              type={pwPrompt ? 'password' : 'text'}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKey}
@@ -262,7 +308,7 @@ export default function Terminal({ onClose }) {
               autoComplete="off"
               autoCorrect="off"
               spellCheck="false"
-              aria-label="Terminal command"
+              aria-label={pwPrompt ? 'Password' : 'Terminal command'}
             />
           </form>
         </div>

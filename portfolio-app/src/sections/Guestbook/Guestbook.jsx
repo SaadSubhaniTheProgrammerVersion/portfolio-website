@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { GUESTBOOK } from '../../data/guestbook'
-import { setState, toast, unlock, useStore } from '../../lib/store'
+import { on, setState, toast, unlock, useStore } from '../../lib/store'
+import { isOffensiveName } from '../../../api/_lib/name-filter.js'
 import { sfx } from '../../lib/sound'
 import './Guestbook.css'
 
@@ -49,9 +50,10 @@ export default function Guestbook() {
   const cell = Math.floor(size / COLS)
 
   // Load the wall only once the section gets close, to keep API calls down.
-  const load = useCallback(async () => {
+  // fresh = skip the CDN cache (after an admin action, so the change shows at once)
+  const load = useCallback(async (fresh = false) => {
     try {
-      const r = await fetch(API)
+      const r = await fetch(fresh ? `${API}?t=${Date.now()}` : API, fresh ? { cache: 'no-store' } : undefined)
       if (!r.ok || !(r.headers.get('content-type') || '').includes('json')) throw new Error()
       setSubmissions((await r.json()).submissions)
       setFailed(false)
@@ -68,7 +70,11 @@ export default function Guestbook() {
       }
     }, { rootMargin: '400px' })
     io.observe(sectionRef.current)
-    return () => io.disconnect()
+    const off = on('guestbook:refresh', () => load(true))
+    return () => {
+      io.disconnect()
+      off()
+    }
   }, [load])
 
   // Size the canvas to its container.
@@ -157,8 +163,10 @@ export default function Guestbook() {
     }
   }
 
+  const nameBad = isOffensiveName(name)
+
   const submit = async () => {
-    if (!pending.length || busy) return
+    if (!pending.length || busy || nameBad) return
     setBusy(true)
     setError('')
     try {
@@ -262,12 +270,13 @@ export default function Guestbook() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Sign it (optional)"
                 autoComplete="nickname"
+                aria-invalid={nameBad}
               />
             </label>
-            <button className="btn btn--sm" onClick={submit} disabled={!pending.length || busy || failed}>
+            <button className="btn btn--sm" onClick={submit} disabled={!pending.length || busy || failed || nameBad}>
               {busy ? 'Pinning…' : 'Pin it to the wall 📌'}
             </button>
-            {error && <p className="gb__error">{error}</p>}
+            {(nameBad || error) && <p className="gb__error">{nameBad ? "Let's keep the wall friendly. Try another name." : error}</p>}
           </div>
         )}
 

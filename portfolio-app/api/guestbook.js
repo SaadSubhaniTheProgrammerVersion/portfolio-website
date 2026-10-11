@@ -1,7 +1,8 @@
 // Vercel function: the pixel guestbook, stored as private JSON files in Vercel Blob.
 //   GET                      -> { submissions }
 //   POST { pixels, name }    -> { submission, submissions }
-//   DELETE ?id=…  (header x-admin-key: $GUESTBOOK_ADMIN_KEY)  -> { removed }
+//   DELETE ?all=1 | ?last=1 | ?name=… | ?id=…   (header x-admin-key: $GUESTBOOK_ADMIN_KEY)
+//                                                 -> { removed, names }
 import { del, get, list, put } from '@vercel/blob'
 import { HttpError, addToGuestbook, readGuestbook, removeFromGuestbook } from './_lib/guestbook-core.js'
 
@@ -54,7 +55,7 @@ const blobStore = {
 export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
-      res.setHeader('Cache-Control', 's-maxage=20, stale-while-revalidate=60')
+      res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=20')
       return res.status(200).json(await readGuestbook(blobStore))
     }
     if (req.method === 'POST') {
@@ -66,7 +67,9 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
       const key = process.env.GUESTBOOK_ADMIN_KEY
       if (!key || req.headers['x-admin-key'] !== key) throw new HttpError(401, 'Not allowed.')
-      return res.status(200).json(await removeFromGuestbook(blobStore, String(req.query.id || '')))
+      const q = req.query
+      res.setHeader('Cache-Control', 'no-store')
+      return res.status(200).json(await removeFromGuestbook(blobStore, { id: q.id, name: q.name, last: q.last === '1', all: q.all === '1' }))
     }
     res.setHeader('Allow', 'GET, POST, DELETE')
     throw new HttpError(405, 'Method not allowed.')

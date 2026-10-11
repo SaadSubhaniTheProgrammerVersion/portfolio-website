@@ -51,9 +51,9 @@ function guestbookDevApi() {
           if (req.method === 'GET') return send(200, await readGuestbook(store))
           if (req.method === 'POST') return send(201, await addToGuestbook(store, await readBody(req), { ip: req.socket.remoteAddress, salt: 'dev' }))
           if (req.method === 'DELETE') {
-            const id = new URL(req.url, 'http://x').searchParams.get('id')
+            const q = new URL(req.url, 'http://x').searchParams
             if (req.headers['x-admin-key'] !== 'dev') throw new HttpError(401, 'Not allowed.')
-            return send(200, await removeFromGuestbook(store, id))
+            return send(200, await removeFromGuestbook(store, { id: q.get('id'), name: q.get('name'), last: q.get('last') === '1', all: q.get('all') === '1' }))
           }
           throw new HttpError(405, 'Method not allowed.')
         } catch (err) {

@@ -8,6 +8,7 @@
 //   writePending(key, d) -> void
 //   deletePending(keys)  -> void
 import { createHash, randomBytes } from 'node:crypto'
+import { isOffensiveName } from './name-filter.js'
 
 export const COLS = 32
 export const ROWS = 20
@@ -17,8 +18,6 @@ export const MAX_NAME = 24
 const COMPACT_AT = 40
 const IP_LIMIT = 3 // per network per 24h, so a shared office/campus Wi-Fi still works
 const DAY = 24 * 60 * 60 * 1000
-
-const BLOCKED = ['fuck', 'shit', 'bitch', 'cunt', 'nigg', 'fag', 'rape', 'porn', 'dick', 'pussy']
 
 export class HttpError extends Error {
   constructor(status, message) {
@@ -32,8 +31,7 @@ export function cleanName(raw) {
   // strip control characters (and anything below space)
   const name = [...String(raw)].filter((ch) => ch >= ' ' && ch !== '\u007f').join('').replace(/\s+/g, ' ').trim()
   if (name.length > MAX_NAME) throw new HttpError(400, `Names can be at most ${MAX_NAME} characters.`)
-  const flat = name.toLowerCase().replace(/[^a-z]/g, '')
-  if (BLOCKED.some((w) => flat.includes(w))) throw new HttpError(400, "Let's keep the wall friendly. Try another name.")
+  if (isOffensiveName(name)) throw new HttpError(400, "Let's keep the wall friendly. Try another name.")
   return name
 }
 
@@ -93,11 +91,18 @@ export async function addToGuestbook(store, body, { ip, salt }) {
   return { submission: publicView([submission])[0], submissions: publicView([...all, submission]) }
 }
 
-export async function removeFromGuestbook(store, id) {
+// Admin: remove by { id }, { name }, { last: true } or wipe it all with { all: true }.
+export async function removeFromGuestbook(store, { id, name, last, all: wipe } = {}) {
   const all = await allSubmissions(store)
-  if (!all.some((s) => s.id === id)) throw new HttpError(404, 'No submission with that id.')
+  let doomed
+  if (wipe) doomed = all
+  else if (last) doomed = all.length ? [all[all.length - 1]] : []
+  else if (name) doomed = all.filter((s) => s.name && s.name.toLowerCase() === String(name).trim().toLowerCase())
+  else doomed = all.filter((s) => s.id === id)
+  if (!doomed.length) throw new HttpError(404, 'Nothing on the wall matches that.')
+  const gone = new Set(doomed.map((s) => s.id))
   const pending = await store.listPending()
-  await store.writeWall({ submissions: all.filter((s) => s.id !== id), mergedUpTo: Date.now() })
+  await store.writeWall({ submissions: all.filter((s) => !gone.has(s.id)), mergedUpTo: Date.now() })
   await store.deletePending(pending.map((p) => p.key))
-  return { removed: id }
+  return { removed: doomed.length, names: doomed.map((s) => s.name || 'anonymous') }
 }

@@ -33,6 +33,7 @@
   border: 2.5px solid var(--ink); border-radius: 999px; background: var(--white); box-shadow: 2px 2px 0 var(--ink);
 }
 .gb__name input:focus { outline: 3px solid var(--pink); outline-offset: 2px; }
+.gb__name input[aria-invalid='true'] { border-color: var(--pink-d); background: #FFE3EC; }
 .gb__error { flex-basis: 100%; margin: 0; font-weight: 700; color: var(--pink-d); }
 .gb__done { margin: 1.2rem 0 0; font-weight: 800; font-size: 1.05rem; }
 
