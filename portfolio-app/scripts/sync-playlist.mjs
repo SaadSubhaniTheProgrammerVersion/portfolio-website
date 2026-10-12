@@ -136,5 +136,13 @@ for (const [key, id] of Object.entries(PLAYLISTS)) {
   if (missing.length) console.log(`[${key}] no playable YouTube match for:\n  ${missing.join('\n  ')}`)
 }
 
-fs.writeFileSync(OUT, JSON.stringify({ synced: new Date().toISOString().slice(0, 10), ...result }, null, 2) + '\n')
-console.log(`\nWrote ${path.relative(process.cwd(), OUT)}`)
+// Only touch the file if a song actually changed, so an unchanged playlist
+// doesn't produce a commit (and a redeploy) just for a new date.
+const previousSongs = { ...previous }
+delete previousSongs.synced
+if (JSON.stringify(previousSongs) === JSON.stringify(result)) {
+  console.log('\nNo playlist changes.')
+} else {
+  fs.writeFileSync(OUT, JSON.stringify({ synced: new Date().toISOString().slice(0, 10), ...result }, null, 2) + '\n')
+  console.log(`\nWrote ${path.relative(process.cwd(), OUT)}`)
+}

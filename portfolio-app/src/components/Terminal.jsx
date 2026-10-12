@@ -54,7 +54,10 @@ const go = (hash) => {
 const ADMIN = {
   'sudo clear-wall': { params: 'all=1', label: 'wiping the whole guestbook wall' },
   'sudo erase-last': { params: 'last=1', label: 'erasing the latest signature' },
+  'sudo sync-playlist': { sync: true, icon: '🎵', label: 'syncing the playlists from Spotify' },
 }
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 function run(raw, ctx) {
   const cmd = raw.trim().toLowerCase().replace(/\s+/g, ' ')
@@ -207,7 +210,47 @@ export default function Terminal({ onClose }) {
 
   // Guestbook admin: the key is remembered for this tab only.
   const [pwPrompt, setPwPrompt] = useState(null)
+  // `sudo sync-playlist`: start the GitHub workflow, then report its progress.
+  const alive = useRef(true)
+  useEffect(() => {
+    alive.current = true
+    return () => (alive.current = false)
+  }, [])
+  const runSync = async (key) => {
+    const headers = { 'x-admin-key': key }
+    try {
+      const r = await fetch('/api/sync-playlist', { method: 'POST', headers })
+      const data = await r.json().catch(() => ({}))
+      if (r.status === 401) {
+        sessionStorage.removeItem('gb.admin')
+        return print(['sudo: incorrect password'])
+      }
+      if (!r.ok) return print([`✗ ${data.error || 'could not start the sync'}`])
+      sessionStorage.setItem('gb.admin', key)
+      print(['✓ sync started. checking in every few seconds (you can close this, it keeps going)…'])
+      const started = new Date(data.started).getTime() - 15000
+      let last = ''
+      for (let i = 0; i < 80 && alive.current; i++) {
+        await sleep(6000)
+        const s = await fetch('/api/sync-playlist', { headers }).then((x) => x.json()).catch(() => null)
+        const fresh = s && s.created && new Date(s.created).getTime() >= started
+        const status = fresh ? s.status : 'queued'
+        if (status !== last && status !== 'completed') print([status === 'in_progress' ? '⚙️  syncing songs…' : '⏳ waiting for GitHub to start…'])
+        last = status
+        if (status === 'completed') {
+          if (s.conclusion === 'success') print(['✓ playlists synced! if anything changed, the site redeploys with the new songs in ~1 min. 🎶'])
+          else print([`✗ the sync failed (${s.conclusion}).${s.url ? ` details: ${s.url}` : ''}`])
+          return
+        }
+      }
+      if (alive.current) print(['…still running. check the Actions tab on GitHub for progress.'])
+    } catch {
+      print(['✗ could not reach the server. try again in a bit.'])
+    }
+  }
+
   const runAdmin = async (action, key) => {
+    if (action.sync) return runSync(key)
     try {
       const r = await fetch(`/api/guestbook?${action.params}`, { method: 'DELETE', headers: { 'x-admin-key': key } })
       const data = await r.json().catch(() => ({}))
@@ -227,7 +270,7 @@ export default function Terminal({ onClose }) {
     const saved = sessionStorage.getItem('gb.admin')
     if (saved) runAdmin(action, saved)
     else setPwPrompt(action)
-    return [`🧹 ${action.label}…`]
+    return [`${action.icon || '🧹'} ${action.label}…`]
   }
 
   const submit = (e) => {

@@ -1,5 +1,5 @@
 {
-  "synced": "2026-10-11",
+  "synced": "2026-10-12",
   "international": {
     "name": "This is Saad Subhani",
     "url": "https://open.spotify.com/playlist/4DP22n5dhbiXOhGEVuBmex",
@@ -407,12 +407,6 @@
         "youtubeId": "Wh-AgS7PKdM"
       },
       {
-        "uri": "spotify:track:1hQia6rxgfM1ly2hE3StWp",
-        "title": "Ishq Wala Love",
-        "artist": "Vishal-Shekhar, Shekhar Ravjiani, Salim Merchant, Neeti Mohan",
-        "youtubeId": "N2cPyl83tkQ"
-      },
-      {
         "uri": "spotify:track:4j6kId9QIqhoXvqHKgSKa0",
         "title": "Grapejuice",
         "artist": "Harry Styles",
@@ -597,6 +591,12 @@
         "title": "Hey Angel",
         "artist": "One Direction",
         "youtubeId": "Z7W-_hfsDJQ"
+      },
+      {
+        "uri": "spotify:track:69NoGy7SkXoITA0fsauZMy",
+        "title": "Little More Time",
+        "artist": "Niall Horan",
+        "youtubeId": "ScqYsvFpft4"
       }
     ]
   },
