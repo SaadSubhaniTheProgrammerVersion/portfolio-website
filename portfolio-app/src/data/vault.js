@@ -1,5 +1,4 @@
 export const VAULT = {
-  code: '2002',
   // Hints get a little less subtle the more wrong guesses pile up:
   // hints[0] at the start, then the next one every 2 wrong guesses.
   hints: [

@@ -15,13 +15,35 @@ export default function Vault() {
   const [msg, setMsg] = useState(VAULT.hints[0])
   const [shake, setShake] = useState(0)
   const [open, setOpen] = useState(false)
+  const [checking, setChecking] = useState(false)
   const doorRef = useRef(null)
 
   // Already cracked on an earlier visit? Keep the door open.
   const isOpen = open || cracked
 
-  const tryCode = (c) => {
-    if (c === VAULT.code) {
+  // The code is checked by the server (/api/vault), so it never ships to the browser.
+  const tryCode = async (c) => {
+    setChecking(true)
+    let res
+    try {
+      const r = await fetch('/api/vault', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: c }),
+      })
+      res = { status: r.status, ...(await r.json().catch(() => ({}))) }
+    } catch {
+      res = { status: 0 }
+    }
+    setChecking(false)
+    if (res.status === 429 || res.status === 0 || res.status >= 500) {
+      sfx('error')
+      setShake((s) => s + 1)
+      setMsg(res.error || 'The vault is not answering right now. Try again in a bit.')
+      setCode('')
+      return
+    }
+    if (res.ok) {
       sfx('flag')
       setOpen(true)
       setMsg('ACCESS GRANTED. Welcome to the goof vault.')
@@ -48,7 +70,7 @@ export default function Vault() {
   }
 
   const press = (k) => {
-    if (isOpen) return
+    if (isOpen || checking) return
     sfx('click')
     if (k === 'C') return setCode('')
     if (k === '⏎') return code.length === 4 && tryCode(code)

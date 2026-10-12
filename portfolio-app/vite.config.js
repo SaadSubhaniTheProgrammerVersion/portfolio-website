@@ -2,8 +2,9 @@ import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { HttpError, addToGuestbook, readGuestbook, removeFromGuestbook } from './api/_lib/guestbook-core.js'
+import { checkVaultCode } from './api/_lib/vault-core.js'
 
 // Dev only: answers /api/guestbook like the Vercel function does, but keeps
 // the wall in a local, git-ignored .guestbook-dev.json instead of Vercel Blob.
@@ -92,9 +93,38 @@ function syncPlaylistDevApi() {
   }
 }
 
+// Dev only: checks the vault code like the Vercel function does. The code
+// comes from the git-ignored .env.local (VAULT_CODE=…), never from the repo.
+function vaultDevApi() {
+  return {
+    name: 'vault-dev-api',
+    apply: 'serve',
+    configureServer(server) {
+      const secret = loadEnv(server.config.mode, process.cwd(), '').VAULT_CODE
+      server.middlewares.use('/api/vault', (req, res) => {
+        let raw = ''
+        req.on('data', (c) => (raw += c))
+        req.on('end', () => {
+          let code
+          try {
+            code = JSON.parse(raw || '{}').code
+          } catch {
+            code = ''
+          }
+          const { status, body } =
+            req.method === 'POST' ? checkVaultCode({ code, secret, ip: req.socket.remoteAddress }) : { status: 405, body: { error: 'Method not allowed.' } }
+          res.statusCode = status
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(body))
+        })
+      })
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), guestbookDevApi(), syncPlaylistDevApi()],
+  plugins: [react(), guestbookDevApi(), syncPlaylistDevApi(), vaultDevApi()],
   // three.js is lazy-loaded with the Mixtape section, so a big chunk there is fine
   build: { chunkSizeWarningLimit: 1000 },
   // Phone testing on the same Wi-Fi: open http://<your-ip-with-dashes>.nip.io:5173
