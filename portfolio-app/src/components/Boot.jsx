@@ -75,7 +75,7 @@ export default function Boot() {
       <p className="boot__sub">a playable portfolio</p>
       <button className="boot__start">▶ PRESS START</button>
       <p className="boot__hint">click · tap · or hit enter</p>
-      <p className="boot__copy">© 2002–{new Date().getFullYear()} · 1 PLAYER · ∞ COINS</p>
+      <p className="boot__copy">© 2026 · 1 PLAYER · ∞ COINS</p>
     </div>
   )
 }
