@@ -93,7 +93,8 @@ export default function Mixtape() {
             The <em>mixtape</em>
           </h2>
           <p className="sec__lede">
-            Handpicked, heavily replayed. Pick a record from the crate and drop the needle. (Drag the deck to look around.)
+            Shouldn't there be some music while you explore the playground? Pick a record from the crate, drop the needle, and keep
+            exploring.
           </p>
         </div>
 
