@@ -14,7 +14,7 @@ Keep each file under ~500 KB if you can (squoosh.app is great for this).
 | Picture5 | Game: WALEE block | Internship days / office |
 | Picture6 | Game: X-rAI award block | The ICESCO award moment |
 | Picture7 | Game: Graduation block | Convocation photo |
-| Picture8 | Game: Zones (Jul 2024) block | First day / team photo |
+| Picture8 | Game: Zones (Jul 2024) block | Zones building |
 | Picture9 | Game: Software Engineer block | Current desk / work setup |
 | Picture10 | Projects: X-rAI cartridge | Demo screenshot or poster (16:9) |
 | Picture11 | Beyond Code polaroid | Pehli Kiran workshop |
