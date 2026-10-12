@@ -306,7 +306,24 @@ export default function CareerQuest() {
             <div className="castle__door" />
           </div>
 
-          <div className="player" ref={playerRef} style={{ width: 22, height: 32 }} data-frame="idle" data-facing="r">
+          <div
+            className="player"
+            ref={playerRef}
+            style={{ width: 22, height: 32 }}
+            data-frame="idle"
+            data-facing="r"
+            onPointerDown={(e) => {
+              // touch screens have no hover: a tap shows the greeting for a moment
+              if (e.pointerType === 'mouse') return
+              const el = e.currentTarget
+              el.classList.add('says-hi')
+              clearTimeout(el.hiTimer)
+              el.hiTimer = setTimeout(() => el.classList.remove('says-hi'), 2200)
+            }}
+          >
+            <span className="player__hi" aria-hidden="true">
+              Hi, I&apos;m Saad! 👋
+            </span>
             <PlayerSprite suit={suit} />
           </div>
         </div>

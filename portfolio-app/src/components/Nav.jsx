@@ -25,7 +25,7 @@ export default function Nav() {
   return (
     <header className="nav">
       <a className="nav__logo" href="#play" onClick={() => setOpen(false)}>
-        SAADSUBHANI<span>.EXE</span>
+        SAAD&apos;S <span>PLAYGROUND</span>
       </a>
 
       <nav className={`nav__links ${open ? 'is-open' : ''}`} aria-label="Sections">

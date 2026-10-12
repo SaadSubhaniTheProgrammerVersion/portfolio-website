@@ -46,7 +46,7 @@ export function useSecrets() {
 export function consoleEgg() {
   if (window.hireSaad) return
   console.log(
-    '%cSAADSUBHANI%c.EXE',
+    "%cSAAD'S %cPLAYGROUND",
     'font: 900 34px Impact, sans-serif; color: #FFC42E; text-shadow: 3px 3px 0 #1B0F16; letter-spacing: 1px',
     'font: 900 34px Impact, sans-serif; color: #E01B7A; text-shadow: 3px 3px 0 #1B0F16',
   )

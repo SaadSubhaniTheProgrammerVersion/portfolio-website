@@ -168,7 +168,7 @@ function run(raw, ctx) {
 
 export default function Terminal({ onClose }) {
   const [lines, setLines] = useState(() => [
-    { t: 'saadsubhani.exe terminal v1.0 · type "help"', k: 'sys' },
+    { t: `saad's playground terminal v1.0 · type "help"`, k: 'sys' },
   ])
   const [input, setInput] = useState('')
   const [history, setHistory] = useState([])
@@ -284,7 +284,7 @@ export default function Terminal({ onClose }) {
             <i />
             <i />
           </span>
-          <span>guest@saadsubhani.exe: ~</span>
+          <span>guest@playground: ~</span>
           <button onClick={onClose} aria-label="Close terminal">
             ✕
           </button>
@@ -292,12 +292,12 @@ export default function Terminal({ onClose }) {
         <div className="term__body" ref={bodyRef} onClick={() => inputRef.current?.focus()}>
           {lines.map((l, i) => (
             <p key={i} className={`term__line term__line--${l.k || 'out'}`}>
-              {l.k === 'cmd' && <span className="term__ps">guest@saadsubhani.exe:~$ </span>}
+              {l.k === 'cmd' && <span className="term__ps">guest@playground:~$ </span>}
               {l.t}
             </p>
           ))}
           <form onSubmit={submit} className="term__form">
-            <span className="term__ps">{pwPrompt ? '[sudo] password for saad: ' : 'guest@saadsubhani.exe:~$ '}</span>
+            <span className="term__ps">{pwPrompt ? '[sudo] password for saad: ' : 'guest@playground:~$ '}</span>
             <input
               ref={inputRef}
               type={pwPrompt ? 'password' : 'text'}

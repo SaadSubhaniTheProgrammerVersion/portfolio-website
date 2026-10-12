@@ -68,7 +68,9 @@ export default function Boot() {
       <div className="boot__clouds" aria-hidden="true" />
       <p className="boot__by">SAAD SUBHANI PRESENTS</p>
       <h1 className="boot__logo">
-        SAADSUBHANI<span>.EXE</span>
+        SAAD&apos;S
+        <br />
+        <span>PLAYGROUND</span>
       </h1>
       <p className="boot__sub">a playable portfolio</p>
       <button className="boot__start">▶ PRESS START</button>

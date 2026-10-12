@@ -8,7 +8,7 @@
   border-bottom: 3px solid var(--ink);
 }
 .nav__logo {
-  display: inline-flex; align-items: center; flex: none;
+  display: inline-flex; align-items: center; gap: .28em; flex: none;
   text-decoration: none; font-family: var(--disp); font-size: 1.35rem; letter-spacing: .02em;
 }
 .nav__logo > span:last-child { color: var(--pink); }
