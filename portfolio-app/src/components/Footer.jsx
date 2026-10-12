@@ -24,7 +24,7 @@ export default function Footer() {
       <div className="wrap foot__inner">
         <p className="foot__name">{PROFILE.name}</p>
         <p className="foot__small">
-          Built with React, Three.js and too much chai. No Nintendo plumbers were harmed.
+          Built with React, Three.js and a lil bit of Iced Latte. No Nintendo plumbers were harmed.
         </p>
         <button className="foot__term" onClick={() => emit('terminal')} aria-label="Open terminal" title="psst">
           {'>_'}
