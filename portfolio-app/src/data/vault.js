@@ -47,9 +47,10 @@ export const VAULT = {
     },
     {
       picture: 20,
-      title: 'Unexplained',
-      place: '¯\\_(ツ)_/¯',
-      story: 'Idk what I was even doing here.',
+      title: 'That SRK Pose',
+      place: 'Neelum Valley, near the Line of Control',
+      story:
+        'Woke everyone up in Neelum Valley, right by the Line of Control between Pakistan and India, with a war siren alarm. After giving everybody trauma, we hiked to the highest point we could see and took some photos with silly poses. Silly, but iconic.',
     },
     {
       picture: 21,
